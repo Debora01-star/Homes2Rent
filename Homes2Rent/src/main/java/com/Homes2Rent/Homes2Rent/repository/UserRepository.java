@@ -1,0 +1,21 @@
+package com.Homes2Rent.Homes2Rent.repository;
+
+
+import com.Homes2Rent.Homes2Rent.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+
+public interface UserRepository extends CrudRepository<User, String> {
+
+    Optional<User> findByUsername(String username);
+
+    Boolean existsByUsername(String username);
+
+    User findUserByUsername(String username);
+}
+

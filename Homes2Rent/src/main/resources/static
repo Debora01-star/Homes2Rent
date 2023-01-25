@@ -1,0 +1,48 @@
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Optional;
+
+import static org.hamcrest.Matchers.is;
+
+@WebMvcTest(BoekingController.class)
+class BoekingControllerTest {
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    JwtService jwtService;
+
+    @MockBean
+    BoeekingService boekingService;
+
+    @Test
+    @WithMockUser(username="testuser", roles="USER")       // check authorization, not authentication
+    void shouldRetrieveCorrectOrder() throws Exception {
+
+        OrderDto odto = new OrderDto();
+        odto.productname = "Appartament 101";
+        odto.unitprice = 1500;
+        odto.quantity = 1;
+
+        Mockito.when(orderService.getOrder(123)).thenReturn(odto);
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/orders/123"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.productname", is("Apartament 101")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.unitprice", is(1500.0)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", is(1)));
+
+    }
+}
