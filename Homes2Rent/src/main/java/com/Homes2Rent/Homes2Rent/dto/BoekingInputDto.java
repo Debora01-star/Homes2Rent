@@ -21,22 +21,19 @@ public class BoekingInputDto {
 
     public Long id;
 
-    public String notes;
-
     public String status;
 
     public String type_boeking;
 
     @Column(unique = true)
-    public String woning;
+    public Woning woning;
 
     public Integer price;
 
 
-    public BoekingInputDto(LocalDate finish_date, Long id, String notes, String status, String type_boeking, String woning, Integer price) {
+    public BoekingInputDto(LocalDate finish_date, Long id, String status, String type_boeking, Woning woning, Integer price) {
         this.finish_date = finish_date;
         this.id = id;
-        this.notes = notes;
         this.status = status;
         this.type_boeking = type_boeking;
         this.woning = woning;
@@ -64,14 +61,6 @@ public class BoekingInputDto {
         this.id = id;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -88,11 +77,11 @@ public class BoekingInputDto {
         this.type_boeking = type_boeking;
     }
 
-    public String getWoning() {
+    public Woning getWoning() {
         return woning;
     }
 
-    public void setWoning(String woning) {
+    public void setWoning(Woning woning) {
         this.woning = woning;
     }
 

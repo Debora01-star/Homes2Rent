@@ -1,16 +1,11 @@
 package com.Homes2Rent.Homes2Rent.model;
 
-import com.Homes2Rent.Homes2Rent.security.AuthorityKey;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 
 
-
+    @Entity
     @IdClass(AuthorityKey.class)
     @Table(name = "authorities")
     public class Authority implements Serializable {

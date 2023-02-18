@@ -5,21 +5,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-public class DuplicatedEntryException extends Throwable {
 
-    public DuplicatedEntryException(String email_already_exists) {
+public class DuplicatedEntryException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
 
+    public DuplicatedEntryException(String username) {
+        super("Cannot find user " + username);
     }
 
-    @ControllerAdvice
-    public class ExceptionController {
-
-        @ExceptionHandler(value = RecordNotFoundException.class)
-        public ResponseEntity<Object> exception(RecordNotFoundException exception) {
-
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
 }
+
+
+
+
+
+
+
+
 
 

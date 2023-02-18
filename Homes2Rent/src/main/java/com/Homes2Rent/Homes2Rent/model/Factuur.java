@@ -4,26 +4,22 @@ package com.Homes2Rent.Homes2Rent.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name= "facturen")
-
 public class Factuur {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
-
     private String klant;
-
-    private String boeking;
-
     private Integer price;
 
+    @OneToOne(mappedBy = "factuur")
+    Boeking boeking;
 
-    public Factuur(Long id, String klant, String boeking, Integer price) {
+
+    public Factuur(Long id, String klant, Integer price) {
 
         this.id = id;
         this.klant = klant;
-        this.boeking = boeking;
         this.price = price;
 
 
@@ -49,13 +45,6 @@ public class Factuur {
         this.klant = klant;
     }
 
-    public String getBoeking() {
-        return boeking;
-    }
-
-    public void setBoeking(String boeking) {
-        this.boeking = boeking;
-    }
 
     public Integer getPrice() {
         return price;
@@ -65,4 +54,7 @@ public class Factuur {
         this.price = price;
     }
 
+    public Factuur getFactuur() {
+        return new Factuur();
+    }
 }

@@ -18,9 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.apache.coyote.http11.Constants.a;
+
 
 @Service
-    public class UserService {
+public class UserService {
     private final UserRepository userRepository;
 
 
@@ -29,16 +31,16 @@ import java.util.Set;
     }
 
 
-    public List<UserDto> getUser() {
+    public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
-        List<User> list = (List<User>) userRepository.findAll();
+        List<User> list = userRepository.findAll();
         for (User user : list) {
             collection.add(fromUser(user));
         }
         return collection;
     }
 
-    public UserDto getUser(String username) throws UsernameNotFoundException {
+    public UserDto getUser(String username) {
         UserDto dto = new UserDto();
         Optional<User> user = userRepository.findById(username);
         if (user.isPresent()) {
@@ -49,11 +51,11 @@ import java.util.Set;
         return dto;
     }
 
-    public boolean existsByUsername(String username) {
+    public boolean userExists(String username) {
         return userRepository.existsById(username);
     }
 
-    public String createUser(@Valid UserInputDto userDto, BindingResult principal) {
+    public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
@@ -64,23 +66,22 @@ import java.util.Set;
         userRepository.deleteById(username);
     }
 
-    public UserDto updateUser(String username, @Valid UserInputDto newUser) {
+
+    public void  updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new RecordNotFoundException ("no username found");
         User user = userRepository.findById(username).get();
         user.setPassword(newUser.getPassword());
-        UserDto userdto =fromUser(user);
         userRepository.save(user);
-        return userdto;
     }
 
-    public Set<Authority> getAuthorities(String username) throws UsernameNotFoundException {
+    public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
         UserDto userDto = fromUser(user);
         return userDto.getAuthorities();
     }
 
-    public void addAuthority(String username, String authority) throws UsernameNotFoundException {
+    public void addAuthority(String username, String authority){
 
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -88,6 +89,13 @@ import java.util.Set;
         userRepository.save(user);
     }
 
+    public void removeAuthority(String username, String authority) {
+        if (!userRepository.existsById(username)) throw new org.springframework.security.core.userdetails.UsernameNotFoundException(username);
+        User user = userRepository.findById(username).get();
+        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        user.removeAuthority(authorityToRemove);
+        userRepository.save(user);
+    }
 
     public static UserDto fromUser(User user) {
 
@@ -97,13 +105,13 @@ import java.util.Set;
         dto.password = user.getPassword();
         dto.enabled = user.isEnabled();
         dto.apikey = user.getApikey();
-        dto.email = user.getEmail();
+        dto.email = (String) user.getEmail();
         dto.authorities = user.getAuthorities();
 
         return dto;
     }
 
-    public User toUser(@Valid UserInputDto userDto) {
+    public User toUser(UserDto userDto) {
 
         var user = new User();
 
@@ -116,12 +124,5 @@ import java.util.Set;
         return user;
     }
 
-    public List<UserDto> getAllUsers() {
 
-        return null;
-    }
-
-    public Long createUser(UserDto userDto) {
-        return null;
-    }
 }

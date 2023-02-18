@@ -1,8 +1,13 @@
 package com.Homes2Rent.Homes2Rent.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Table(name="boekingen")
@@ -10,27 +15,54 @@ public class Boeking {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private LocalDate finish_date;
-    private String notes;
     private String status;
     private String type_boeking;
 
-
-    @JsonManagedReference
-    public String woning;
-
     public Integer price;
 
-    public Boeking(Long id, LocalDate finish_date, String notes, String status, String type_boeking, String woning, Integer price) {
+    @ManyToOne
+    Woning woning;
+
+    public Woning getWoning() {
+        return woning;
+    }
+
+    public Factuur getFactuur() {
+        return factuur;
+    }
+
+    public void setFactuur(Factuur factuur) {
+        this.factuur = factuur;
+    }
+
+    public Annulering getAnnulering() {
+        return annulering;
+    }
+
+    public void setAnnulering(Annulering annulering) {
+        this.annulering = annulering;
+    }
+
+
+
+    @OneToOne
+    Factuur factuur;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "annulering_id")
+    private Annulering annulering;
+
+
+    public Boeking(Long id, LocalDate finish_date, String status, String type_boeking, Integer price, Woning woning) {
         this.id = id;
         this.finish_date = finish_date;
-        this.notes = notes;
         this.status = status;
         this.type_boeking = type_boeking;
-        this.woning = woning;
         this.price = price;
+        this.woning = woning;
     }
 
     public Boeking() {
@@ -52,14 +84,6 @@ public class Boeking {
         this.finish_date = finish_date;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -76,13 +100,6 @@ public class Boeking {
         this.type_boeking = type_boeking;
     }
 
-    public String getWoning() {
-        return woning;
-    }
-
-    public void setWoning(String woning) {
-        this.woning = woning;
-    }
 
     public Integer getPrice() {
         return price;
@@ -91,4 +108,15 @@ public class Boeking {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
+    public void setAnnulering(Object annulering) {
+    }
+
+    public Woning getWoning(Woning woning) {
+        return woning;
+    }
+
+    public void setWoning(Woning woning) { this.woning = woning;
+    }
+
 }

@@ -76,8 +76,8 @@ class BoekingControllerTest {
         public void setUp() {
             mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-            woning1 = new Woning("huis", "villa happiness", 1L, 1500, "xxl", "klant");
-            woning2 = new Woning("appartament", "cozy rooms", 2L, 750, "medium", "klant");
+            woning1 = new Woning(1L, "huis", "villa happiness", 1500, "rented");
+            woning2 = new Woning(2L, "appartament", "cozy rooms", 750, "rented");
 
             woningDto1 = new WoningDto(1L, "huis", "villa happiness", 1500, "rented");
             woningDto2 = new WoningDto(2L, "appartament", "cozy rooms", 750, "rented");
@@ -85,14 +85,14 @@ class BoekingControllerTest {
             woningInputDto1 = new WoningInputDto(1L, "huis","villa hapiness", 1500, "rented");
             woningInputDto2 = new WoningInputDto(2L,"appartament","cozy rooms",  750,  "rented");
 
-            boeking1 = new Boeking(1L, LocalDate.of(2022,03,15),"notes", "status", "geboekt","woning1", 1500);
-            boeking2 = new Boeking(1L, LocalDate.of(2022,03,21),"notes", "status", "geboekt","woning2", 750);
+            boeking1 = new Boeking(1L, LocalDate.of(2022,03,15), "status", "geboekt",1500, woning1);
+            boeking2 = new Boeking(1L, LocalDate.of(2022,03,21), "status", "geboekt",750, woning2);
 
-            boekingDto1 = new BoekingDto(1L, LocalDate.of(2022, 03, 15), "notes", "status", "geboekt", "woning1", 1500);
-            boekingDto2 = new BoekingDto(2L, LocalDate.of(2022, 03, 21), "notes", "status", "geboekt", "woning2", 750);
+            boekingDto1 = new BoekingDto(1L, LocalDate.of(2022, 03, 15), "status", "geboekt", woning1, 1500);
+            boekingDto2 = new BoekingDto(2L, LocalDate.of(2022, 03, 21), "status", "geboekt", woning2, 750);
 
-            boekingInputDto1 = new BoekingInputDto(LocalDate.of(2022,03,15), 1L,  "notes", "status", "geboekt", "woning1", 1500);
-            boekingInputDto2 = new BoekingInputDto(LocalDate.of(2022,03,21), 2L,  "notes", "status", "geboekt", "woning2", 750);
+            boekingInputDto1 = new BoekingInputDto(LocalDate.of(2022,03,15), 1L,  "status", "geboekt", woning1, 1500);
+            boekingInputDto2 = new BoekingInputDto(LocalDate.of(2022,03,21), 2L,  "status", "geboekt", woning2, 750);
         }
 
         @Test
@@ -113,9 +113,9 @@ class BoekingControllerTest {
         }
 
         @Test
-        void getBoeking() throws Exception {
+        void getBoekingById() throws Exception {
             Long id = 1L;
-            given(service.getBoeking(id)).willReturn(boekingDto1);
+            given(service.getBoekingById(id)).willReturn(boekingDto1);
             mockMvc.perform(get("/boekingen/1"))
                     .andExpect(status().isOk())
                     .andDo(print())

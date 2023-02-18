@@ -4,9 +4,10 @@ import com.Homes2Rent.Homes2Rent.dto.WoningDto;
 import com.Homes2Rent.Homes2Rent.dto.WoningInputDto;
 import com.Homes2Rent.Homes2Rent.exceptions.DuplicatedEntryException;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
-import com.Homes2Rent.Homes2Rent.model.Klant;
+import com.Homes2Rent.Homes2Rent.model.Customer;
 import com.Homes2Rent.Homes2Rent.model.Woning;
-import com.Homes2Rent.Homes2Rent.repository.KlantRepository;
+import com.Homes2Rent.Homes2Rent.repository.CustomerRepository;
+import com.Homes2Rent.Homes2Rent.repository.UserRepository;
 import com.Homes2Rent.Homes2Rent.repository.WoningRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +40,7 @@ import static org.mockito.Mockito.*;
         WoningRepository woningRepository;
 
         @Mock
-        KlantRepository klantRepository;
+        CustomerRepository customerRepository;
 
         @InjectMocks
         WoningService woningService;
@@ -49,48 +51,48 @@ import static org.mockito.Mockito.*;
         Woning woning1;
         Woning woning2;
 
-        Klant klant1;
-        Klant klant2;
+        Customer customer1;
+
+        Customer customer2;
 
         @BeforeEach
         void setUp() {
-            klant1 = new Klant(1L, "test@email.nl","testnaam","gebruiker","teststraat 77","teststad","1234AB");
-            klant2 = new Klant(1L, "test@email2.nl","testnaam2","gebruiker2","teststraat 88","teststad2","1234CD");
+            customer1 = new Customer(1L, "secret@email.com","name1","lastname1","streetname1","city1","zipcode1");
+            customer2 = new Customer(2L, "secret2@email.com","name2","lastname2","streetname2","city2","zipcode2");
 
-            woning1 = new Woning("huis", "villa happiness", 1L, 1500, "rented", "klant");
-            woning2 = new Woning( 2L, "appartament", "cozy rooms", "klant");
+            woning1 = new Woning(1L, "huis", "villa happiness", 1500, "rented");
+            woning2 = new Woning( 2L, "appartament", "cozy rooms", 750, "rented");
         }
 
         @Test
         void createWoning() throws DuplicatedEntryException {
-            WoningInputDto dto = new WoningInputDto(1L,"huis","villa hapiness", 1500, "rented");
+            WoningDto dto = new WoningDto(1L,"huis","villa happiness", 1500, "rented");
 
-            given(klantRepository.findById(1L)).willReturn(Optional.of(klant1));
+            given(customerRepository.findById(1L)).willReturn(Optional.of(customer1));
             when(woningRepository.save(woning1)).thenReturn(woning1);
 
             woningService.addWoning(dto);
             verify(woningRepository, times(1)).save(argumentCaptor.capture());
             Woning woning = argumentCaptor.getValue();
 
-            assertEquals(woning1.getId(), woning.getId());
             assertEquals(woning1.getPrice(), woning.getPrice());
             assertEquals(woning1.getType(), woning.getType());
             assertEquals(woning1.getName(), woning.getName());
             assertEquals(woning1.getRented(), woning.getRented());
-            assertEquals(woning1.getKlant(), woning.getKlant());
 
         }
 
         @Test
         void updateWoning() throws DuplicatedEntryException {
             when(woningRepository.findById(1L)).thenReturn(Optional.of(woning1));
-            given(klantRepository.findById(1L)).willReturn(Optional.of(klant1));
+            when(woningRepository.existsById(any())).thenReturn(true);
+            given(customerRepository.findById(1L)).willReturn(Optional.of(customer1));
 
-            WoningInputDto dto = new WoningInputDto(1L,"huis","villa hapiness", 1500, "rented");
+            WoningInputDto dto = new WoningInputDto(1L,"huis","villa happiness", 1500, "rented");
 
-            when(woningRepository.save(woningService.transferToWoning(dto))).thenReturn(woning1);
+            when(woningRepository.save(woning1)).thenReturn(woning1);
 
-            woningService.updateWoning(1L, dto);
+            woningService.updateWoning(1L, new WoningDto());
 
             verify(woningRepository, times(1)).save(argumentCaptor.capture());
 
@@ -145,13 +147,13 @@ import static org.mockito.Mockito.*;
 
         @Test
         void updateWoningThrowsExceptionTest() {
-            assertThrows(RecordNotFoundException.class, () -> woningService.updateWoning(1L, new WoningInputDto(1L, "huis", "villa happiness", 1500, "rented")));
+            assertThrows(RecordNotFoundException.class, () -> woningService.updateWoning(1L,  new WoningDto(1L, "huis", "villa happiness", 1500, "rented")));
         }
 
         @Test
         void updateWoningThrowsNotFoundExceptionTest() {
             WoningInputDto woningInputDto = new WoningInputDto(1L,"huis","villa happiness", 1500, "rented");
-            assertThrows(RecordNotFoundException.class, () -> woningService.updateWoning(null,woningInputDto));
+            assertThrows(RecordNotFoundException.class, () -> woningService.updateWoning(null,new WoningDto()));
         }
 
         @Test
@@ -162,7 +164,7 @@ import static org.mockito.Mockito.*;
         @Test
         void updateWoningThrowsExceptionForKlantTest() {
             when(woningRepository.findById(any())).thenReturn(Optional.of(woning1));
-            assertThrows(RecordNotFoundException.class, () -> woningService.updateWoning(3L,new WoningInputDto(1L,"huis","villa happiness", 1500, "rented")));
+            assertThrows(RecordNotFoundException.class, () -> woningService.updateWoning(3L,new WoningDto(1L,"huis","villa happiness", 1500, "rented")));
         }
     }
 

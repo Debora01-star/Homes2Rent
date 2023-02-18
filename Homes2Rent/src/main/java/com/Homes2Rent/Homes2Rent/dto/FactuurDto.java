@@ -1,15 +1,9 @@
 package com.Homes2Rent.Homes2Rent.dto;
 
 
-import com.Homes2Rent.Homes2Rent.model.Boeking;
-import com.Homes2Rent.Homes2Rent.model.Klant;
-
-
 public class FactuurDto {
 
     public Long id;
-
-    public String klant;
 
     public String boeking;
 
@@ -21,14 +15,6 @@ public class FactuurDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getKlant() {
-        return klant;
-    }
-
-    public void setKlant(String klant) {
-        this.klant = klant;
     }
 
     public String getBoeking() {

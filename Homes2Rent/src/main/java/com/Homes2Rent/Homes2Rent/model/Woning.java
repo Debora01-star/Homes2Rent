@@ -1,8 +1,8 @@
 package com.Homes2Rent.Homes2Rent.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -11,7 +11,7 @@ public class Woning {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
 
     private Long id;
 
@@ -21,13 +21,17 @@ public class Woning {
     private String rented;
 
 
-    @JoinColumn(name = "klant_id")
-    private String klant;
+    @OneToMany(mappedBy = "woning")
+    @JsonIgnore
+    List<Boeking> boekingen;
 
+    public List<Boeking> getBoekingen() {
+        return boekingen;
+    }
 
-    @OneToOne(mappedBy = "woning")
-    @JsonBackReference
-    private Boeking boeking;
+    public void setBoekingen(List<Boeking> boekingen) {
+        this.boekingen = boekingen;
+    }
 
     public Woning(Long id, String type, String name, Integer price, String rented) {
         this.id = id;
@@ -37,20 +41,18 @@ public class Woning {
         this.rented = rented;
     }
 
-    public Woning(Long id, String type, String name, String klant) {
-        this.klant = klant;
+    public Woning(Long id, String type, String name) {
         this.id = id;
         this.type = type;
         this.name = name;
     }
 
-    public Woning(String type, String name, Long id, Integer price, String rented, String klant) {
+    public Woning(String type, String name, Long id, Integer price, String rented) {
         this.type = type;
         this.name = name;
         this.id = id;
         this.price = price;
         this.rented = rented;
-        this.klant = klant;
     }
 
     public Woning() {
@@ -97,20 +99,6 @@ public class Woning {
         this.rented = rented;
     }
 
-    public String getKlant() {
-        return klant;
-    }
 
-    public void setKlant(Klant klant) {
-        this.klant = String.valueOf(klant);
-    }
-
-    public Boeking getBoeking() {
-        return boeking;
-    }
-
-    public void setBoeking(Boeking boeking) {
-        this.boeking = boeking;
-    }
 }
 

@@ -5,7 +5,6 @@ import com.Homes2Rent.Homes2Rent.dto.WoningInputDto;
 import com.Homes2Rent.Homes2Rent.exceptions.DuplicatedEntryException;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.model.Woning;
-import com.Homes2Rent.Homes2Rent.repository.KlantRepository;
 import com.Homes2Rent.Homes2Rent.repository.WoningRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,90 +19,82 @@ public class WoningService {
 
         private WoningRepository woningRepository;
 
-        private final KlantRepository klantRepository;
-
-        public WoningService(WoningRepository woningRepository, KlantRepository klantRepository)
+        public WoningService(WoningRepository woningRepository)
 
         {
             this.woningRepository = woningRepository;
-            this.klantRepository = klantRepository;
-
-        }
-        public WoningDto addWoning(WoningInputDto dto) throws DuplicatedEntryException {
-            if (woningRepository.existsById(dto.getId())) {
-                throw new DuplicatedEntryException("Woning already exists");
-            } else {
-                Woning woning = transferToWoning(dto);
-                woningRepository.save(woning);
-                return transferToDto(woning);
-            }
 
         }
 
-        public WoningDto updateWoning(Long id, WoningInputDto dto) throws DuplicatedEntryException {
-            if (woningRepository.findById(id).isPresent()) {
-                Woning woning = woningRepository.findById(id).get();
-
-                Woning existingwoning = woningRepository.findWoningById(dto.getId());
-
-                if (existingwoning != null && !existingwoning.getId().equals(woning.getId())) {
-                    throw new DuplicatedEntryException("Woning already exists");
-                } else {
-
-                    Woning updatewoning = transferToWoning(dto);
-                    updatewoning.setId(woning.getId());
-                    Woning savedWoning = woningRepository.save(updatewoning);
-                    return transferToDto(updatewoning);
-                }
-            } else {
-                throw new RecordNotFoundException("no woning found");
-            }
-
+    public List<WoningDto> getAllWoningen() {
+        List<Woning> woningList = woningRepository.findAll();
+        List<WoningDto> dtos = new ArrayList<>();
+        for (Woning woning : woningList) {
+            dtos.add(transferToDto(woning));
         }
-        public void deleteWoning(Long id) {
+        return dtos;
+    }
+
+    public WoningDto getWoning(Long id) {
+        Optional<Woning> woning = woningRepository.findById(id);
+        if(woning.isPresent()) {
+            WoningDto dto = transferToDto(woning.get());
+            return dto;
+        } else {
+            throw new RecordNotFoundException("No woning found");
+        }
+    }
+
+    public WoningDto addWoning(WoningDto woningDto) {
+        Woning woning = transferToWoning(woningDto);
+        woningRepository.save(woning);
+        return transferToDto(woning);
+    }
+
+
+    public void deleteWoning(Long id) {
         woningRepository.deleteById(id);
     }
 
-        public Collection<WoningDto> getAllWoningen() {
-
-        List<WoningDto> woningDtoList = new ArrayList<>();
-        List<Woning> woningList = (List<Woning>) woningRepository.findAll();
-        for (Woning woning : woningList) {
-            WoningDto dto = transferToDto(woning);
-            woningDtoList.add(dto);
+    public void updateWoning(Long id, WoningDto woningDto) {
+        if(!woningRepository.existsById(id)) {
+            throw new RecordNotFoundException("No woning found");
         }
-        return woningDtoList;
+        Woning woning = woningRepository.findById(id).orElse(null);
+
+        woning.setId(woning.getId());
+        woning.setRented(woning.getRented());
+        woning.setName(woning.getName());
+        woning.setPrice(woning.getPrice());
+        woningRepository.save(woning);
+
     }
 
-        public WoningDto getWoning(Long id) {
-        Optional<Woning> woning = woningRepository.findById(id);
-        if (woning.isPresent()) {
-            Woning w = woning.get();
-            return transferToDto(w);
-        } else {
-            throw new RecordNotFoundException("woning not found");
-        }
-    }
-         public WoningDto transferToDto(Woning woning) {
-            WoningDto dto = new WoningDto();
-            dto.setId(woning.getId());
-            dto.setType(woning.getType());
-            dto.setName(woning.getName());
-            dto.setPrice(woning.getPrice());
-            dto.setRented(woning.getRented());
-            return dto;
-    }
-        public Woning transferToWoning(WoningInputDto dto) {
+    public WoningDto transferToDto(Woning woning){
+        var dto = new WoningDto();
 
-            var woning = new Woning();
-            woning.setId(dto.getId());
-            woning.setType(dto.getType());
-            woning.setName(dto.getName());
-            woning.setPrice(dto.getPrice());
-            woning.setRented(dto.getRented());
-            return woning;
+        dto.setId(woning.getId());
+        dto.setType(woning.getType());
+        dto.setName(woning.getName());
+        dto.setRented(woning.getRented());
+        dto.setPrice(woning.getPrice());
 
-        }
+        return dto;
     }
 
+    public Woning transferToWoning(WoningDto woningDto){
+        Woning woning = new Woning();
+
+        woning.setId(woningDto.getId());
+        woning.setType(woningDto.getType());
+        woning.setName(woningDto.getName());
+        woning.setRented(woningDto.getRented());
+        woning.setPrice(woningDto.getPrice());
+
+        return woning;
+    }
+
+
+
+}
 

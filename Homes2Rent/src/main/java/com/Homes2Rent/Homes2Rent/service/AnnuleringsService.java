@@ -6,7 +6,6 @@ import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.model.Annulering;
 import com.Homes2Rent.Homes2Rent.repository.AnnuleringRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,85 +17,56 @@ public class AnnuleringsService {
 
     private final AnnuleringRepository annuleringRepository;
 
+
     public AnnuleringsService(AnnuleringRepository annuleringRepository) {
         this.annuleringRepository = annuleringRepository;
     }
 
-
     public List<AnnuleringDto> getAllAnnuleringen() {
-        List<Annulering> annuleringList = (List<Annulering>) annuleringRepository.findAll();
-        List<AnnuleringDto> annuleringDtoList = new ArrayList<>();
-
-        for (Annulering annulering : annuleringList) {
-            AnnuleringDto dto = transferToDto(annulering);
-            annuleringDtoList.add(dto);
+        List<Annulering> annuleringen = annuleringRepository.findAll();
+        List<AnnuleringDto> dtos = new ArrayList<>();
+        for (Annulering ci : annuleringen) {
+            dtos.add(transferToDto((Annulering) annuleringen));
         }
-        return annuleringDtoList;
+        return dtos;
     }
 
-
-    public List<AnnuleringDto> getAllAnnuleringen(String Id) {
-        List<Annulering> annuleringList = annuleringRepository.findAllAnnuleringByIdEqualsIgnoreCase(Id);
-        List<AnnuleringDto> annuleringDtoList = new ArrayList<>();
-
-        for (Annulering annulering : annuleringList) {
-            AnnuleringDto dto = transferToDto(annulering);
-            annuleringDtoList.add(dto);
-        }
-        return annuleringDtoList;
-    }
-
-    public AnnuleringDto getAnnuleringById(Long id) throws RecordNotFoundException {
-        Optional<Annulering> annuleringOptional = annuleringRepository.findById(id);
-        if (annuleringOptional.isPresent()) {
-            Annulering annulering = annuleringOptional.get();
-            return transferToDto(annulering);
+    public AnnuleringDto getAnnulering(long id) {
+        Optional<Annulering> annulering = annuleringRepository.findById(id);
+        if(annulering.isPresent()) {
+            AnnuleringDto ann = transferToDto(annulering.get());
+            return ann;
         } else {
-            throw new RecordNotFoundException("geen annulering gevonden");
+            throw new RecordNotFoundException("No annulering found");
         }
     }
 
-    public AnnuleringDto addAnnulering(AnnuleringInputDto dto) {
-
-        Annulering annulering = transfertoAnnulering(dto);
-        annuleringRepository.save(annulering);
-
-        return transferToDto(annulering);
+    public AnnuleringDto addAnnulering(AnnuleringDto annuleringDto) {
+        annuleringRepository.save(transfertoAnnulering(new AnnuleringInputDto()));
+        return annuleringDto;
     }
-
-    public void deleteAnnulering(@RequestBody Long id) {
-
+    public void deleteAnnulering(Long id) {
         annuleringRepository.deleteById(id);
-
     }
 
-    public AnnuleringDto updateAnnulering(Long id, AnnuleringInputDto newAnnulering) throws RecordNotFoundException {
+    public void updateAnnulering(Long id, AnnuleringDto annuleringDto) {
+        if(!annuleringRepository.existsById(id)) {
+            throw new RecordNotFoundException("No annulering found");
+        }
 
-        Optional<Annulering> annuleringOptional = annuleringRepository.findById(id);
-        if (annuleringOptional.isPresent()) {
-
-            Annulering annulering1 = annuleringOptional.get();
+        Annulering annulering1 = annuleringRepository.findById(id).orElse(null);
 
 
-            annulering1.setId(newAnnulering.getId());
-            annulering1.setFinish_date(newAnnulering.getFinish_date());
-            annulering1.setNotes(newAnnulering.getNotes());
-            annulering1.setStatus(newAnnulering.getStatus());
-            annulering1.setType_boeking(newAnnulering.getType_boeking());
-            annulering1.setPrice(newAnnulering.getPrice());
-            annulering1.setName(newAnnulering.getName());
-            annulering1.setWoning(newAnnulering.getWoning());
+            annulering1.setId(annuleringDto.getId());
+            annulering1.setFinish_date(annuleringDto.getFinish_date());
+            annulering1.setStatus(annuleringDto.getStatus());
+            annulering1.setType_boeking(annuleringDto.getType_boeking());
+            annulering1.setPrice(annuleringDto.getPrice());
+            annulering1.setName(annuleringDto.getName());
+            annulering1.setWoning(annuleringDto.getWoning());
 
             Annulering returnAnnulering = annuleringRepository.save(annulering1);
-
-            return transferToDto(returnAnnulering);
-
-        } else {
-
-            throw new RecordNotFoundException("geen annulering gevonden");
-
-        }
-
+        annuleringRepository.save(annulering1);
     }
 
     public Annulering transfertoAnnulering(AnnuleringInputDto dto) {
@@ -105,7 +75,6 @@ public class AnnuleringsService {
         annulering.setId(dto.getId());
         annulering.setFinish_date(dto.getFinish_date());
         annulering.setPrice(dto.getPrice());
-        annulering.setNotes(dto.getNotes());
         annulering.setStatus(dto.getStatus());
         annulering.setType_boeking(dto.getType_boeking());
         annulering.setName(dto.getName());
@@ -121,7 +90,6 @@ public class AnnuleringsService {
         dto.setFinish_date(annulering.getFinish_date());
         dto.setPrice(annulering.getPrice());
         dto.setName(annulering.getName());
-        dto.setNotes(annulering.getNotes());
         dto.setStatus((annulering.getStatus()));
         dto.setType_boeking((annulering.getType_boeking()));
         dto.setWoning((annulering.getWoning()));

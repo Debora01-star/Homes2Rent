@@ -8,22 +8,20 @@ public class BoekingDto {
 
     public Long id;
     public LocalDate finish_date;
-    public String notes;
 
     public String status;
     public String type_boeking;
 
-    public String woning;
+    public Woning woning;
     private Integer price;
 
 
     public BoekingDto() {
     }
 
-    public BoekingDto(Long id, LocalDate finish_date, String notes, String status, String type_boeking, String woning, Integer price) {
+    public BoekingDto(Long id, LocalDate finish_date, String status, String type_boeking, Woning woning, Integer price) {
         this.id = id;
         this.finish_date = finish_date;
-        this.notes = notes;
         this.status = status;
         this.type_boeking = type_boeking;
         this.woning = woning;
@@ -46,13 +44,6 @@ public class BoekingDto {
         this.finish_date = finish_date;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
 
     public String getStatus() {
         return status;
@@ -70,11 +61,11 @@ public class BoekingDto {
         this.type_boeking = type_boeking;
     }
 
-    public String getWoning() {
+    public Woning getWoning() {
         return woning;
     }
 
-    public void setWoning(String woning) {
+    public void setWoning(Woning woning) {
         this.woning = woning;
     }
 
@@ -86,4 +77,10 @@ public class BoekingDto {
         this.price = price;
     }
 
+    public void setFactuurDto(FactuurDto transferToDto) {
+    }
+
+    public void setAnnuleringDto(AnnuleringDto transferToDto) {
+    }
 }
+

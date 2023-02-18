@@ -1,34 +1,40 @@
 package com.Homes2Rent.Homes2Rent.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.Homes2Rent.Homes2Rent.model.Authority;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
-import java.util.Collection;
+import javax.management.relation.Role;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserInputDto {
 
+    @Column
+    public String firstname;
+    @Column
+    public String lastname;
 
-        public String firstname;
+    @Column
+    public String email;
 
-        public String lastname;
+    @Id
+    @Column(nullable = false, unique = true)
+    public String username;
 
-        @Email
-        public String email;
+    @Column(nullable = false, length = 255)
+    public String password;
+    @Column(nullable = false)
+    public Boolean enabled = true;
+    @Column
+    public String apikey;
 
-        @Column(unique = true)
-        public String username;
-
-        @Size(min=6, max=20)
-        public String password;
-
-         @JsonSerialize
-         public Collection<Object> authorities;
-
-
-    public static Long[] roles;
-
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    public Set<Authority> authorities = new HashSet<>();
 
     public String getFirstname() {
         return firstname;
@@ -70,22 +76,29 @@ public class UserInputDto {
         this.password = password;
     }
 
-    public static Long[] getRoles() {
-        return roles;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public static void setRoles(Long[] roles) {
-        UserInputDto.roles = roles;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public void setApikey(String randomString) {
+    public String getApikey() {
+        return apikey;
     }
 
-    public Object getEnabled() {
-        return null;
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
     }
 
-    public Object getApikey() {
-        return null;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+
 }

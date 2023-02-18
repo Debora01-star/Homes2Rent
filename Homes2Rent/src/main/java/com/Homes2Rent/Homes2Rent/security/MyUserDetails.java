@@ -1,6 +1,6 @@
 package com.Homes2Rent.Homes2Rent.security;
 
-import com.Homes2Rent.Homes2Rent.model.Role;
+import com.Homes2Rent.Homes2Rent.model.Authority;
 import com.Homes2Rent.Homes2Rent.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,9 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 
-    public class MyUserDetails implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
         private final User user;
 
@@ -22,8 +23,8 @@ import java.util.List;
         public Collection<? extends GrantedAuthority> getAuthorities() {
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-            for (Role role : user.getRoles()) {
-                authorities.add(new SimpleGrantedAuthority(role.getRolename()));
+            for (Authority authority  : user.getAuthorities()) {
+                authorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
             }
 
             return authorities;

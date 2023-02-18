@@ -1,23 +1,21 @@
 package com.Homes2Rent.Homes2Rent.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
-    @Entity
-    @Table(name = "annulering")
+@Entity
     public class Annulering {
 
-
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue
         private Long id;
 
         private LocalDate finish_date;
-
-        private String notes;
 
         private String status;
 
@@ -27,14 +25,17 @@ import java.time.LocalDate;
 
         private String name;
 
+        @OneToOne
+        public Woning woning;
 
-        @JsonManagedReference
-        public String woning;
+        @OneToMany(mappedBy = "annulering")
+        @JsonIgnore
+        List<Boeking> boekingen;
 
-        public Annulering(Long id, LocalDate finish_date, String notes, String status, String type_boeking, String woning, Integer price, String name) {
+
+        public Annulering(Long id, LocalDate finish_date, String status, String type_boeking, Woning woning, Integer price, String name) {
             this.id = id;
             this.finish_date = finish_date;
-            this.notes = notes;
             this.status = status;
             this.type_boeking = type_boeking;
             this.woning = woning;
@@ -63,13 +64,6 @@ import java.time.LocalDate;
             this.finish_date = finish_date;
         }
 
-        public String getNotes() {
-            return notes;
-        }
-
-        public void setNotes(String notes) {
-            this.notes = notes;
-        }
 
         public String getStatus() {
             return status;
@@ -103,11 +97,11 @@ import java.time.LocalDate;
             this.name = name;
         }
 
-        public String getWoning() {
+        public Woning getWoning() {
             return woning;
         }
 
-        public void setWoning(String woning) {
+        public void setWoning(Woning woning) {
             this.woning = woning;
         }
     }

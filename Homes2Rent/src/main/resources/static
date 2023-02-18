@@ -26,7 +26,7 @@ class BoekingControllerTest {
     BoeekingService boekingService;
 
     @Test
-    @WithMockUser(username="testuser", roles="USER")       // check authorization, not authentication
+    @WithMockUser(username="testuser", authorities="USER")       // check authorization, not authentication
     void shouldRetrieveCorrectOrder() throws Exception {
 
         OrderDto odto = new OrderDto();

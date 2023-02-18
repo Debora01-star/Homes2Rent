@@ -1,11 +1,10 @@
 package com.Homes2Rent.Homes2Rent.controller;
 
 import com.Homes2Rent.Homes2Rent.dto.AnnuleringDto;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.Homes2Rent.Homes2Rent.service.AnnuleringsService;
-
 import java.util.List;
+
 
 @RestController
 
@@ -18,44 +17,37 @@ public class AnnuleringController {
     }
 
     @GetMapping("/annuleringen")
-    public ResponseEntity<Object> getAllAnnuleringen() {
+    public List<AnnuleringDto> getAllAnnuleringen() {
 
-        // Return een String met een 200 status
-        return ResponseEntity.ok("annulering");
+        var dtos = annuleringsService.getAllAnnuleringen();
 
+        return dtos;
     }
 
     @GetMapping("/annuleringen/{id}")
-    public ResponseEntity<Object> getAnnulering(@PathVariable("id") Long id) {
+    public AnnuleringDto getAnnulering(@PathVariable("id") Long id) {
 
-        // return een String met een 200 status
-        return ResponseEntity.ok("annulering with id: " + id);
+        AnnuleringDto annuleringDto = annuleringsService.getAnnulering(id);
 
+        return annuleringDto;
     }
 
     @PostMapping("/annuleringen")
-    public ResponseEntity<Object> addAnnulering(@RequestBody String annulering) {
-
-        // Return een String met een 201 status
-        //De null van created zal over een paar weken vervangen worden door een gegenereerde url.
-        return ResponseEntity.created(null).body("annulering");
-
+    public AnnuleringDto addAnnulering(@RequestBody AnnuleringDto dto) {
+        AnnuleringDto annuleringDto = annuleringsService.addAnnulering(dto);
+        return annuleringDto;
     }
 
     @DeleteMapping("/annuleringen/{id}")
-    public ResponseEntity<Object> deleteAnnulering(@PathVariable Long id) {
-
-        //Return een 204 status
-        return ResponseEntity.noContent().build();
+    public void deleteAnnulering(@PathVariable("id") Long id) {
+        annuleringsService.deleteAnnulering(id);
 
     }
 
     @PutMapping("/annuleringen/{id}")
-    public ResponseEntity<Object> updateAnnulering(@PathVariable Long id, @RequestBody String annulering) {
-
-        // Return een 204 status
-        return ResponseEntity.noContent().build();
-
+    public AnnuleringDto updateAnnulering(@PathVariable("id") Long id, @RequestBody AnnuleringDto annuleringDto) {
+        annuleringsService.updateAnnulering(id, annuleringDto);
+        return annuleringDto;
     }
 
 

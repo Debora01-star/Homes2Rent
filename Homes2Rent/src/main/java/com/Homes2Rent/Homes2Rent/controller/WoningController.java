@@ -1,55 +1,66 @@
 package com.Homes2Rent.Homes2Rent.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.Homes2Rent.Homes2Rent.dto.BoekingDto;
+import com.Homes2Rent.Homes2Rent.dto.WoningDto;
+import com.Homes2Rent.Homes2Rent.service.BoekingService;
+import com.Homes2Rent.Homes2Rent.service.WoningService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 public class WoningController {
 
+    private final WoningService woningService;
 
+    private final BoekingService boekingService;
+
+    public WoningController(WoningService woningService, BoekingService boekingService1) {
+        this.woningService = woningService;
+        this.boekingService = boekingService1;
+    }
 
     @GetMapping("/woningen")
-    public ResponseEntity<Object> getAllWoningen() {
+    public List<WoningDto> getAllWoningen() {
 
-        // Return een String met een 200 status
-        return ResponseEntity.ok("woningen");
+        List<WoningDto> woningen = woningService.getAllWoningen();
 
+        return woningen;
     }
 
     @GetMapping("/woningen/{id}")
-    public ResponseEntity<Object> getWoning(@PathVariable("id") Long id) {
+    public WoningDto getWoning(@PathVariable("id") Long id) {
 
-        // return een String met een 200 status
-        return ResponseEntity.ok("woning with id: " + id);
+        WoningDto woningDto = woningService.getWoning(id);
 
+        return woningDto;
     }
 
     @PostMapping("/woningen")
-    public ResponseEntity<Object> addWoning(@RequestBody String woning) {
+    public WoningDto addWoning(@RequestBody WoningDto woningDto) {
 
-        // Return een String met een 201 status
-        //De null van created zal over een paar weken vervangen worden door een gegenereerde url.
-        return ResponseEntity.created(null).body("woning");
+        WoningDto dto1 = woningService.addWoning(woningDto);
 
+        return dto1;
     }
 
     @DeleteMapping("/woningen/{id}")
-    public ResponseEntity<Object> deleteWoning(@PathVariable Long id) {
-
-        //Return een 204 status
-        return ResponseEntity.noContent().build();
-
+    public void deleteWoning(@PathVariable("id") Long id) {
+        woningService.deleteWoning(id);
     }
 
     @PutMapping("/woningen/{id}")
-    public ResponseEntity<Object> updateWoning(@PathVariable Long id, @RequestBody String woning) {
-
-        // Return een 204 status
-        return ResponseEntity.noContent().build();
-
+    public WoningDto updateWoning(@PathVariable("id") Long id, @RequestBody WoningDto dto) {
+        woningService.updateWoning(id, dto);
+        return dto;
     }
 
-
+//    @GetMapping("/woningen/boekingen/{woningId}")
+//    public BoekingDto getBoekingByWoningId(@PathVariable("woningId") Long woningId){
+//        return boekingService.getBoekingById(woningId);
+//    }
 }
+
 
 

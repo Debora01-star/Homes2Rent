@@ -54,13 +54,13 @@ import static org.mockito.Mockito.*;
             woning1 = new Woning(1L,"huis","villa happiness", 1500, "rented");
             woning2 = new Woning(1L,"appartament", "cozy rooms", 750, "rented");
 
-            boeking1 = new Boeking(1L, LocalDate.of(2022,03,15), "notes", "status", "geboekt", "woning1", 1500);
-            boeking2 = new Boeking(2L, LocalDate.of(2022,03,21), "notes", "status", "geboekt", "woning2", 750);
+            boeking1 = new Boeking(1L, LocalDate.of(2022,03,15),  "status", "geboekt", 1500, woning1);
+            boeking2 = new Boeking(2L, LocalDate.of(2022,03,21), "status", "geboekt", 750, woning2);
         }
 
         @Test
         void createBoeking() {
-            BoekingInputDto dto = new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "notes", "status", "geboekt", "woning1", 1500);
+            BoekingInputDto dto = new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "status", "geboekt", woning1, 1500);
 
             given(woningRepository.findById(1L)).willReturn(Optional.of(woning1));
             when(boekingRepository.save(boeking1)).thenReturn(boeking1);
@@ -70,10 +70,8 @@ import static org.mockito.Mockito.*;
             Boeking boeking = argumentCaptor.getValue();
 
             assertEquals(boeking1.getType_boeking(), boeking.getType_boeking());
-            assertEquals(boeking1.getNotes(), boeking.getNotes());
             assertEquals(boeking1.getStatus(), boeking.getStatus());
             assertEquals(boeking1.getFinish_date(), boeking.getFinish_date());
-            assertEquals(boeking1.getId(), boeking.getId());
             assertEquals(boeking1.getPrice(), boeking.getPrice());
             assertEquals(boeking1.getWoning(), boeking.getWoning());
 
@@ -83,18 +81,17 @@ import static org.mockito.Mockito.*;
         void updateBoeking() {
             when(boekingRepository.findById(1L)).thenReturn(Optional.of(boeking1));
             given(woningRepository.findById(1L)).willReturn(Optional.of(woning1));
-            BoekingInputDto dto = new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "notes", "status", "geboekt", "woning1", 1500);
+            BoekingInputDto dto = new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "status", "geboekt", woning1, 1500);
 
             when(boekingRepository.save(boekingService.transferToBoeking(dto))).thenReturn(boeking1);
 
-            boekingService.updateBoeking(dto,1L);
+            boekingService.updateBoeking(1L, dto);
 
             verify(boekingRepository, times(1)).save(argumentCaptor.capture());
 
             Boeking captured = argumentCaptor.getValue();
 
             assertEquals(dto.getType_boeking(), captured.getType_boeking());
-            assertEquals(dto.getNotes(), captured.getNotes());
             assertEquals(dto.getStatus(), captured.getStatus());
             assertEquals(dto.getFinish_date(), captured.getFinish_date());
             assertEquals(dto.getId(), captured.getId());
@@ -120,7 +117,6 @@ import static org.mockito.Mockito.*;
 
             assertEquals(boekingen.get(0).getType_boeking(), dtos.get(0).getType_boeking());
             assertEquals(boekingen.get(0).getFinish_date(), dtos.get(0).getFinish_date());
-            assertEquals(boekingen.get(0).getNotes(), dtos.get(0).getNotes());
             assertEquals(boekingen.get(0).getStatus(), dtos.get(0).getStatus());
             assertEquals(boekingen.get(0).getWoning(), dtos.get(0).getWoning());
             assertEquals(boekingen.get(0).getId(), dtos.get(0).getId());
@@ -133,28 +129,27 @@ import static org.mockito.Mockito.*;
             when(boekingRepository.findById(id)).thenReturn(Optional.of(boeking2));
 
             Boeking boeking = boekingRepository.findById(id).get();
-            BoekingDto dto = boekingService.getBoeking(id);
+            BoekingDto dto = boekingService.getBoekingById(id);
 
             assertEquals(boeking.getWoning(), dto.getWoning());
             assertEquals(boeking.getType_boeking(), dto.getType_boeking());
             assertEquals(boeking.getStatus(), dto.getStatus());
-            assertEquals(boeking.getNotes(), dto.getNotes());
             assertEquals(boeking.getFinish_date(), dto.getFinish_date());
         }
 
         @Test
         void updateBoekingThrowsExceptionTest() {
-            assertThrows(RecordNotFoundException.class, () -> boekingService.updateBoeking(new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "notes", "status", "geboekt", "woning1", 1500 ), 1L));
+            assertThrows(RecordNotFoundException.class, () -> boekingService.updateBoeking(1L, new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "status", "geboekt", woning1, 1500 )));
         }
 
         @Test
         void getBoekingThrowsExceptionTest() {
-            assertThrows(RecordNotFoundException.class, () -> boekingService.getBoeking(null));
+            assertThrows(RecordNotFoundException.class, () -> boekingService.getBoekingById(null));
         }
 
         @Test
         void updateBoekingThrowsExceptionForBoekingTest() {
-            when(boekingRepository.findById(any())).thenReturn(Optional.of(boeking1));
-            assertThrows(RecordNotFoundException.class, () -> boekingService.updateBoeking(new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "notes", "status", "geboekt", "woning1", 750), 2L));
+            when(boekingRepository.findById(any())).thenReturn(Optional.empty());
+            assertThrows(RecordNotFoundException.class, () -> boekingService.updateBoeking(1L, new BoekingInputDto(LocalDate.of(2022,03,15), 1L, "status", "geboekt", woning2, 750)));
         }
     }

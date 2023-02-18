@@ -1,38 +1,43 @@
 package com.Homes2Rent.Homes2Rent.dto;
 
 import com.Homes2Rent.Homes2Rent.model.Authority;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import javax.management.relation.Role;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
 
-
-
     @Id
+    @Column(nullable = false, unique = true)
     public String username;
-    public Object email;
 
-    private String firstname;
+    @Column
+    public String email;
 
-    public Boolean enabled;
+    @Column
+    public String firstname;
 
+    @Column(nullable = false)
+    public Boolean enabled = true;
+
+    @Column
     public String apikey;
+    @Column
+    public String lastname;
 
-    private String Email;
-
-    private String lastname;
-
+    @Column(nullable = false, length = 255)
     public String password;
 
-    @JsonSerialize
-    public Collection<Object> authorities;
-
-    public static Collection<Role> rol;
-
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    public Set<Authority> authorities = new HashSet<>();
 
 
 
@@ -44,6 +49,14 @@ public class UserDto {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -52,12 +65,20 @@ public class UserDto {
         this.firstname = firstname;
     }
 
-    public String getEmail() {
-        return Email;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setEmail(String email) {
-        Email = email;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getApikey() {
+        return apikey;
+    }
+
+    public void setApikey(String apikey) {
+        this.apikey = apikey;
     }
 
     public String getLastname() {
@@ -76,21 +97,12 @@ public class UserDto {
         this.password = password;
     }
 
-    public static Collection<Role> getRol() {
-        return rol;
-    }
-
-    public static void setRol(Collection<Role> rol) {
-        UserDto.rol = rol;
-    }
-
-
     public Set<Authority> getAuthorities() {
-        return null;
+        return authorities;
     }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
 }
-
-
-
-
-

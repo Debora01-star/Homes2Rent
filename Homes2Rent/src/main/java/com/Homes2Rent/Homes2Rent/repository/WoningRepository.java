@@ -10,11 +10,11 @@ import java.util.List;
 
 @Repository
 
-public interface WoningRepository extends CrudRepository<Woning, Long> {
+public interface WoningRepository extends JpaRepository<Woning, Long> {
 
     boolean existsById(Long Id);
 
     Woning findWoningById(Long Id);
 
-    List<Woning> findAllWoningenEqualsIgnoreCase(String woning);
+
 }

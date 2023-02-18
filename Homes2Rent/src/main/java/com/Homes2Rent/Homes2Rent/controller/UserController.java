@@ -2,87 +2,89 @@ package com.Homes2Rent.Homes2Rent.controller;
 
 
 import com.Homes2Rent.Homes2Rent.dto.UserDto;
-import com.Homes2Rent.Homes2Rent.dto.UserInputDto;
-import com.Homes2Rent.Homes2Rent.exceptions.DuplicatedEntryException;
-import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
-import com.Homes2Rent.Homes2Rent.exceptions.UsernameNotFoundException;
+import com.Homes2Rent.Homes2Rent.exceptions.BadRequestException;
 import com.Homes2Rent.Homes2Rent.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
 import java.net.URI;
-import java.security.Principal;
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
+
+@CrossOrigin
 @RestController
-
+@RequestMapping(value = "/users")
 public class UserController {
 
-        private final UserService service;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+    @GetMapping(value = "")
+    public ResponseEntity<List<UserDto>> getUsers() {
+
+        List<UserDto> userDtos = userService.getUsers();
+
+        return ResponseEntity.ok().body(userDtos);
+    }
+
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
+
+        UserDto optionalUser = userService.getUser(username);
 
 
-        public UserController(UserService service) {
-                this.service = service;
+        return ResponseEntity.ok().body(optionalUser);
+
+    }
+
+    @PostMapping(value = "")
+    public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
+
+        String newUsername = userService.createUser(dto);
+        userService.addAuthority(newUsername, "ROLE_USER");
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+                .buildAndExpand(newUsername).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping(value = "/{username}")
+    public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @RequestBody UserDto dto) {
+
+        userService.updateUser(username, dto);
+
+        return ResponseEntity.noContent().build();
+    }
+    @DeleteMapping(value = "/{username}")
+    public ResponseEntity<Object> deleteKlant(@PathVariable("username") String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.noContent().build();
+    }
+    @GetMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(userService.getAuthorities(username));
+    }
+
+    @PostMapping(value = "/{username}/authorities")
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+        try {
+            String authorityName = (String) fields.get("authority");
+            userService.addAuthority(username, authorityName);
+            return ResponseEntity.noContent().build();
         }
-
-        @PostMapping("users")
-        public ResponseEntity<String> createUser(@Valid @RequestBody UserDto userDto, BindingResult br) {
-
-                if (br.hasErrors()) {
-                        // something's wrong
-                        StringBuilder sb = new StringBuilder();
-                        for (FieldError fe : br.getFieldErrors()) {
-                                sb.append(fe.getField() + ": ");
-                                sb.append(fe.getDefaultMessage());
-                                sb.append("\n");
-                        }
-                        return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
-                }
-                else {
-                        // happy flow
-                        Long createdId = service.createUser(userDto);
-
-                        URI uri = URI.create(
-                                ServletUriComponentsBuilder
-                                        .fromCurrentContextPath()
-                                        .path("/users/" + createdId).toUriString());
-                        return ResponseEntity.created(uri).body("User created!");
-                }
+        catch (Exception ex) {
+            throw new BadRequestException();
         }
+    }
 
+    @DeleteMapping(value = "/{username}/authorities/{authority}")
+    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+        userService.removeAuthority(username, authority);
+        return ResponseEntity.noContent().build();
+    }
 
-
-        @PutMapping("users/{id}")
-        public ResponseEntity<Object> updateUser(@PathVariable String id, @Valid @RequestBody UserInputDto dto) throws RecordNotFoundException, DuplicatedEntryException {
-                UserDto user = service.updateUser(id, dto);
-                return new ResponseEntity<>(user, HttpStatus.CREATED);
-        }
-
-        @DeleteMapping("users/{id}")
-        public ResponseEntity<Object> deleteUser(@PathVariable String id) throws RecordNotFoundException {
-                service.deleteUser(id);
-                return ResponseEntity.status(HttpStatus.OK).body("User deleted");
-        }
-
-        @GetMapping("users")
-        public ResponseEntity<Collection<UserDto>> getUsers() {
-                Collection<UserDto> dtos;
-                dtos = service.getAllUsers();
-                if (!dtos.isEmpty()) {
-                        return ResponseEntity.ok().body(dtos);
-                } else {
-                        return ResponseEntity.notFound().build();
-                }
-        }
-
-        @GetMapping("users/{id}")
-        public ResponseEntity<Object> getOneUser(@PathVariable String id) throws RecordNotFoundException, UsernameNotFoundException {
-                UserDto user = service.getUser(id);
-                return ResponseEntity.ok().body(user);
-        }
 }

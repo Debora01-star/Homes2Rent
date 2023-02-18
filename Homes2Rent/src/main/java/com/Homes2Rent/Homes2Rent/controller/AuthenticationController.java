@@ -2,13 +2,13 @@ package com.Homes2Rent.Homes2Rent.controller;
 
 import com.Homes2Rent.Homes2Rent.Payload.AuthenticationRequest;
 import com.Homes2Rent.Homes2Rent.Payload.AuthenticationResponse;
-import com.Homes2Rent.Homes2Rent.exceptions.BadCredentialsException;
-import com.Homes2Rent.Homes2Rent.service.CustomerUserDetailsService;
+import com.Homes2Rent.Homes2Rent.service.CustomUserDetailsService;
 import com.Homes2Rent.Homes2Rent.util.JwtUtil;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +21,11 @@ import java.security.Principal;
 
         private final AuthenticationManager authenticationManager;
 
-        private final CustomerUserDetailsService userDetailsService;
+        private final CustomUserDetailsService userDetailsService;
 
         JwtUtil jwtUtl;
 
-        public AuthenticationController(AuthenticationManager authenticationManager, CustomerUserDetailsService userDetailsService, JwtUtil jwtUtl) {
+        public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtl) {
             this.authenticationManager = authenticationManager;
             this.userDetailsService = userDetailsService;
             this.jwtUtl = jwtUtl;
@@ -42,9 +42,14 @@ import java.security.Principal;
             String username = authenticationRequest.getUsername();
             String password = authenticationRequest.getPassword();
 
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
+            try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(username, password)
+                );
+            }
+            catch (BadCredentialsException ex) {
+                throw new Exception("Incorrect username or password", ex);
+            }
 
             final UserDetails userDetails = userDetailsService
                     .loadUserByUsername(username);

@@ -10,19 +10,17 @@ public class AnnuleringDto {
 
     public Long id;
     public LocalDate finish_date;
-    public String notes;
 
     public String status;
     public String type_boeking;
 
-    public String woning;
+    public Woning woning;
     private Integer price;
     private String name;
 
-    public AnnuleringDto(Long id, LocalDate finish_date, String notes, String status, String type_boeking, String woning, Integer price, String name) {
+    public AnnuleringDto(Long id, LocalDate finish_date, String status, String type_boeking, Woning woning, Integer price, String name) {
         this.id = id;
         this.finish_date = finish_date;
-        this.notes = notes;
         this.status = status;
         this.type_boeking = type_boeking;
         this.woning = woning;
@@ -50,13 +48,6 @@ public class AnnuleringDto {
         this.finish_date = finish_date;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
 
     public String getStatus() {
         return status;
@@ -74,11 +65,11 @@ public class AnnuleringDto {
         this.type_boeking = type_boeking;
     }
 
-    public String getWoning() {
+    public Woning getWoning() {
         return woning;
     }
 
-    public void setWoning(String woning) {
+    public void setWoning(Woning woning) {
         this.woning = woning;
     }
 
