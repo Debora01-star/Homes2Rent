@@ -24,6 +24,7 @@ public class Boeking {
     public Integer price;
 
     @ManyToOne
+    @JoinColumn(name = "woning_id")
     Woning woning;
 
     public Woning getWoning() {
@@ -49,6 +50,7 @@ public class Boeking {
 
 
     @OneToOne
+    @JoinColumn(name ="factuur")
     Factuur factuur;
 
     @ManyToOne(fetch = FetchType.EAGER)

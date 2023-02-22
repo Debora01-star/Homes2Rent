@@ -26,14 +26,14 @@ public class BoekingController {
         this.woningService = woningService;
     }
 
-    @GetMapping("/boekingen")
+    @GetMapping( "")
     public ResponseEntity<List<BoekingDto>> getAllBoekingen() {
         List<BoekingDto> dtos = boekingService.getAllBoekingen();
         return ResponseEntity.ok().body(dtos);
 
     }
 
-    @GetMapping("/boekingen/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<BoekingDto> getBoekingById(@PathVariable("id") Long id) {
 
         BoekingDto boeking = boekingService.getBoekingById(id);
@@ -42,7 +42,7 @@ public class BoekingController {
 
     }
 
-    @PostMapping("/boekingen")
+    @PostMapping("")
     public ResponseEntity<Object> addBoeking(@RequestBody BoekingInputDto boekingInputDto) {
 
         BoekingDto dto = boekingService.addBoeking(boekingInputDto);
@@ -51,7 +51,7 @@ public class BoekingController {
 
     }
 
-    @DeleteMapping("/boekingen/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteBoeking(@PathVariable Long id) {
 
         boekingService.deleteBoeking(id);
@@ -60,7 +60,7 @@ public class BoekingController {
 
     }
 
-    @PutMapping("/boekingen/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Object> updateBoeking(@PathVariable Long id, @RequestBody BoekingInputDto newBoeking) {
 
         BoekingDto dto = boekingService.updateBoeking(id, newBoeking);
@@ -68,12 +68,12 @@ public class BoekingController {
         return ResponseEntity.ok().body(dto);
     }
 
-    @PutMapping("/boekingen/{id}/factuur")
-    public void assignFactuurToBoeking(@PathVariable("id") Long id, @RequestBody IdInputDto input) {
-        boekingService.assignFactuurToBoeking(id, input.id);
+    @PutMapping("{id}/factuur/{factuur_id}")
+    public void assignFactuurToBoeking(@PathVariable("id") Long id, @PathVariable ("factuur_id") Long factuur_id) {
+        boekingService.assignFactuurToBoeking(id, factuur_id);
     }
 
-    @PutMapping("/boekingen/{id}/{woningId}")
+    @PutMapping("/{id}/{woningId}")
     public void assignWoningToBoeking(@PathVariable("id") Long id, @PathVariable("woningId") Long woningId) {
         boekingService.assignWoningToBoeking(id, woningId);
     }

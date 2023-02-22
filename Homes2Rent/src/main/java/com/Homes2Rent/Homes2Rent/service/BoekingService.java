@@ -149,7 +149,7 @@ public class BoekingService {
 
     public void assignFactuurToBoeking(Long id, Long factuurId) {
             var optionalBoeking = boekingRepository.findById(id);
-            var optionalFactuur = factuurRepository.findById(id);
+            var optionalFactuur = factuurRepository.findById(factuurId);
 
             if(optionalBoeking.isPresent() && optionalFactuur.isPresent()) {
                 var boeking = optionalBoeking.get();
