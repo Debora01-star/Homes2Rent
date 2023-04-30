@@ -1,13 +1,11 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
+import ch.qos.logback.core.joran.action.Action;
 import com.Homes2Rent.Homes2Rent.dto.BoekingDto;
 import com.Homes2Rent.Homes2Rent.dto.BoekingInputDto;
-import com.Homes2Rent.Homes2Rent.dto.IdInputDto;
 import com.Homes2Rent.Homes2Rent.service.BoekingService;
 import com.Homes2Rent.Homes2Rent.service.WoningService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -50,6 +48,7 @@ public class BoekingController {
         return ResponseEntity.created(null).body(dto);
 
     }
+
 
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteBoeking(@PathVariable Long id) {

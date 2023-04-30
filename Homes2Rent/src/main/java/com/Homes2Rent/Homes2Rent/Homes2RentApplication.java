@@ -1,7 +1,7 @@
 package com.Homes2Rent.Homes2Rent;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 @SpringBootApplication
 public class Homes2RentApplication {

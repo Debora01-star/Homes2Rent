@@ -1,8 +1,7 @@
 package com.Homes2Rent.Homes2Rent.dto;
-
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
 
 public class WoningInputDto {
 

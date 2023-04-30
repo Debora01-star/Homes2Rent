@@ -1,5 +1,4 @@
 package com.Homes2Rent.Homes2Rent.model;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

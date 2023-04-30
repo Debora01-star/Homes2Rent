@@ -1,10 +1,7 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
-
 import com.Homes2Rent.Homes2Rent.dto.FactuurDto;
 import org.springframework.web.bind.annotation.*;
 import com.Homes2Rent.Homes2Rent.service.FactuurService;
-
 import java.util.List;
 
 @RestController

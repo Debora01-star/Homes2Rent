@@ -1,17 +1,12 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
 import com.Homes2Rent.Homes2Rent.dto.CustomerDto;
 import com.Homes2Rent.Homes2Rent.dto.CustomerInputDto;
 import com.Homes2Rent.Homes2Rent.exceptions.DuplicatedEntryException;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 

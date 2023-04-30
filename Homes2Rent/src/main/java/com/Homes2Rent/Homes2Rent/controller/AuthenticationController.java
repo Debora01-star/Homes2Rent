@@ -1,5 +1,4 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
 import com.Homes2Rent.Homes2Rent.Payload.AuthenticationRequest;
 import com.Homes2Rent.Homes2Rent.Payload.AuthenticationResponse;
 import com.Homes2Rent.Homes2Rent.service.CustomUserDetailsService;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 
 

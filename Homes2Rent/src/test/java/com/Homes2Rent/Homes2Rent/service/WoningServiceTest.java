@@ -7,7 +7,6 @@ import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.model.Customer;
 import com.Homes2Rent.Homes2Rent.model.Woning;
 import com.Homes2Rent.Homes2Rent.repository.CustomerRepository;
-import com.Homes2Rent.Homes2Rent.repository.UserRepository;
 import com.Homes2Rent.Homes2Rent.repository.WoningRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.springframework.security.core.userdetails.User;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;

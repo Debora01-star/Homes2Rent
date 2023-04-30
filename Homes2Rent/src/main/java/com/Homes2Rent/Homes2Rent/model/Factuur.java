@@ -1,7 +1,7 @@
 package com.Homes2Rent.Homes2Rent.model;
-
-
 import javax.persistence.*;
+
+
 
 @Entity
 public class Factuur {

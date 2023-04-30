@@ -1,11 +1,8 @@
 package com.Homes2Rent.Homes2Rent.model;
-
-import jdk.jfr.Enabled;
-
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 
 
 @Entity

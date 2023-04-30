@@ -1,12 +1,8 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
-import com.Homes2Rent.Homes2Rent.dto.BoekingDto;
 import com.Homes2Rent.Homes2Rent.dto.WoningDto;
 import com.Homes2Rent.Homes2Rent.service.BoekingService;
 import com.Homes2Rent.Homes2Rent.service.WoningService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
 import java.util.List;
 
 @RestController

@@ -1,12 +1,9 @@
 package com.Homes2Rent.Homes2Rent.dto;
-
 import com.Homes2Rent.Homes2Rent.model.Authority;
-import javax.management.relation.Role;
 import javax.persistence.*;
-
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 
 public class UserDto {
 

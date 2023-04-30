@@ -1,8 +1,8 @@
 package com.Homes2Rent.Homes2Rent.dto;
-
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+
 
 public class CustomerInputDto {
 

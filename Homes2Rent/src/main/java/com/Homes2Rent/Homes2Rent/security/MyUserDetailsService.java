@@ -1,12 +1,11 @@
 package com.Homes2Rent.Homes2Rent.security;
-
 import com.Homes2Rent.Homes2Rent.model.User;
 import com.Homes2Rent.Homes2Rent.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import java.util.Optional;
+
 
 
     public class MyUserDetailsService implements UserDetailsService {

@@ -1,9 +1,7 @@
 package com.Homes2Rent.Homes2Rent.dto;
-
-
 import com.Homes2Rent.Homes2Rent.model.Woning;
-
 import java.time.LocalDate;
+
 
 public class AnnuleringDto {
 

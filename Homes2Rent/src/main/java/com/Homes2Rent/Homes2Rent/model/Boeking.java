@@ -1,13 +1,8 @@
 package com.Homes2Rent.Homes2Rent.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
+
+
 
 @Entity
 @Table(name="boekingen")

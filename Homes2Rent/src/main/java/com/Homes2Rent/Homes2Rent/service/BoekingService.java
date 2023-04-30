@@ -1,6 +1,4 @@
 package com.Homes2Rent.Homes2Rent.service;
-
-
 import com.Homes2Rent.Homes2Rent.dto.BoekingDto;
 import com.Homes2Rent.Homes2Rent.dto.BoekingInputDto;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
@@ -8,7 +6,6 @@ import com.Homes2Rent.Homes2Rent.model.Boeking;
 import com.Homes2Rent.Homes2Rent.model.Factuur;
 import com.Homes2Rent.Homes2Rent.repository.*;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +45,6 @@ public class BoekingService {
     }
 
 
-//    public List<BoekingDto> getAllBoekingenByReservation(String reservation) {
-//        List<Boeking> boekingList = boekingRepository.findAllBoekingenByReservationEqualsIgnoreCase(reservation);
-//        return transferBoekingListToDtoList(boekingList);
-//    }
     public List<BoekingDto> transferBoekingListToDtoList(List<Boeking> boekingen){
         List<BoekingDto> boekingDtoList = new ArrayList<>();
 
@@ -101,9 +94,9 @@ public class BoekingService {
 
     }
 
-    public BoekingDto addBoeking(BoekingInputDto dto) {
+    public BoekingDto addBoeking(BoekingInputDto boekingInputdto) {
 
-        Boeking boeking = transferToBoeking(dto);
+        Boeking boeking = transferToBoeking(boekingInputdto);
         boekingRepository.save(boeking);
 
         return transferToDto(boeking);
@@ -115,14 +108,14 @@ public class BoekingService {
         boekingRepository.deleteById(id);
 
     }
-    public BoekingDto updateBoeking(Long id, BoekingInputDto inputDto) {
+    public BoekingDto updateBoeking(Long id, BoekingInputDto InputDto) {
 
         if(boekingRepository.findById(id).isEmpty()){
             throw new RecordNotFoundException("geen boeking gevonden");
         } else {
             Boeking boeking = boekingRepository.findById(id).get();
 
-            Boeking boeking1 = transferToBoeking(inputDto);
+            Boeking boeking1 = transferToBoeking(InputDto);
             boeking1.setId(boeking.getId());
 
             boekingRepository.save(boeking1);

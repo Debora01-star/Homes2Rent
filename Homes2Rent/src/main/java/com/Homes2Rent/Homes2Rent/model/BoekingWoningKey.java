@@ -1,10 +1,9 @@
 package com.Homes2Rent.Homes2Rent.model;
-
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 @Embeddable
 public class BoekingWoningKey  implements Serializable {

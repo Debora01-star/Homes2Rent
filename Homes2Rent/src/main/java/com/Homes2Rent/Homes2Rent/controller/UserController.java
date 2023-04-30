@@ -1,6 +1,4 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
-
 import com.Homes2Rent.Homes2Rent.dto.UserDto;
 import com.Homes2Rent.Homes2Rent.exceptions.BadRequestException;
 import com.Homes2Rent.Homes2Rent.service.UserService;
@@ -14,7 +12,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/username")
 public class UserController {
 
     private final UserService userService;
@@ -40,8 +38,8 @@ public class UserController {
 
     }
 
-    @PostMapping(value = "")
-    public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
+    @PostMapping(value = "/{username}")
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_USER");
@@ -53,14 +51,14 @@ public class UserController {
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @RequestBody UserDto dto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
         userService.updateUser(username, dto);
 
         return ResponseEntity.noContent().build();
     }
     @DeleteMapping(value = "/{username}")
-    public ResponseEntity<Object> deleteKlant(@PathVariable("username") String username) {
+    public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }

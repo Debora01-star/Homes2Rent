@@ -1,17 +1,14 @@
 package com.Homes2Rent.Homes2Rent.service;
-
 import com.Homes2Rent.Homes2Rent.dto.WoningDto;
-import com.Homes2Rent.Homes2Rent.dto.WoningInputDto;
-import com.Homes2Rent.Homes2Rent.exceptions.DuplicatedEntryException;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.model.Woning;
 import com.Homes2Rent.Homes2Rent.repository.WoningRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+
 
 @Service
 public class WoningService {

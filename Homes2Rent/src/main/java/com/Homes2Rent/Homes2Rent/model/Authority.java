@@ -1,5 +1,4 @@
 package com.Homes2Rent.Homes2Rent.model;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

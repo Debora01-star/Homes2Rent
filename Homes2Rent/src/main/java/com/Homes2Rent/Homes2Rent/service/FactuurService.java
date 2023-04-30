@@ -1,16 +1,13 @@
 package com.Homes2Rent.Homes2Rent.service;
-
 import com.Homes2Rent.Homes2Rent.dto.FactuurDto;
-import com.Homes2Rent.Homes2Rent.dto.FactuurInputDto;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.model.Factuur;
 import com.Homes2Rent.Homes2Rent.repository.FactuurRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 
 @Service

@@ -2,34 +2,38 @@ package com.Homes2Rent.Homes2Rent.service;
 
 
 import com.Homes2Rent.Homes2Rent.dto.UserDto;
-import com.Homes2Rent.Homes2Rent.dto.UserInputDto;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
 import com.Homes2Rent.Homes2Rent.exceptions.UsernameNotFoundException;
 import com.Homes2Rent.Homes2Rent.model.Authority;
 import com.Homes2Rent.Homes2Rent.model.User;
 import com.Homes2Rent.Homes2Rent.repository.UserRepository;
 import com.Homes2Rent.Homes2Rent.util.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.apache.coyote.http11.Constants.a;
-
 
 @Service
+@Lazy
+
 public class UserService {
     private final UserRepository userRepository;
 
-
-    public UserService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+@Lazy
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-    }
+        this.passwordEncoder = passwordEncoder;
 
+    }
 
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
@@ -114,9 +118,11 @@ public class UserService {
     public User toUser(UserDto userDto) {
 
         var user = new User();
+        var encodePassword = passwordEncoder.encode(userDto.getPassword());
 
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(encodePassword);
+//        user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());

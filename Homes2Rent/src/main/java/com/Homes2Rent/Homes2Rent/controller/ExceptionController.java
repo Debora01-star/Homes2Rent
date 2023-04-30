@@ -1,5 +1,4 @@
 package com.Homes2Rent.Homes2Rent.controller;
-
 import com.Homes2Rent.Homes2Rent.exceptions.BadRequestException;
 import com.Homes2Rent.Homes2Rent.exceptions.DuplicatedEntryException;
 import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
