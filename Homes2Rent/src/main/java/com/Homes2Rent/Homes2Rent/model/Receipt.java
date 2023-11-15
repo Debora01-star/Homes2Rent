@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 
 @Entity
-public class Factuur {
+public class Receipt {
 
     @Id
     @GeneratedValue
@@ -12,11 +12,11 @@ public class Factuur {
     private String klant;
     private Integer price;
 
-    @OneToOne(mappedBy = "factuur")
-    Boeking boeking;
+    @OneToOne(mappedBy = "receipt")
+    Booking booking;
 
 
-    public Factuur(Long id, String klant, Integer price) {
+    public Receipt(Long id, String klant, Integer price) {
 
         this.id = id;
         this.klant = klant;
@@ -25,7 +25,7 @@ public class Factuur {
 
     }
 
-    public Factuur() {
+    public Receipt() {
 
     }
 
@@ -54,7 +54,7 @@ public class Factuur {
         this.price = price;
     }
 
-    public Factuur getFactuur() {
-        return new Factuur();
+    public Receipt getReceipt() {
+        return new Receipt();
     }
 }

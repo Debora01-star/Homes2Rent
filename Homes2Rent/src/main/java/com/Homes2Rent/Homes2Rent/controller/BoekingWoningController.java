@@ -1,8 +1,8 @@
 //package com.Homes2Rent.Homes2Rent.controller;
 //
 //
-//import com.Homes2Rent.Homes2Rent.dto.BoekingDto;
-//import com.Homes2Rent.Homes2Rent.dto.WoningDto;
+//import com.Homes2Rent.Homes2Rent.dto.BookingDto;
+//import com.Homes2Rent.Homes2Rent.dto.HomeDto;
 //import com.Homes2Rent.Homes2Rent.service.BoekingWoningService;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
@@ -32,12 +32,12 @@
 //    }
 //
 //    @GetMapping("/boekingwoningen/{boekingwoningenId}")
-//    public Collection<WoningDto> getBoekingWoningByBoekingId(@PathVariable("woningId") Long woningId) {
+//    public Collection<HomeDto> getBoekingWoningByBoekingId(@PathVariable("woningId") Long woningId) {
 //        return boekingWoningService.getBoekingWoningByBoekingId(woningId);
 //    }
 //
 //    @GetMapping("/boekingwoningen/{boekingwoningenId}")
-//    public Collection<BoekingDto> getBoekingWoningByWoningId(@PathVariable("woningId") Long boekingId) {
+//    public Collection<BookingDto> getBoekingWoningByWoningId(@PathVariable("woningId") Long boekingId) {
 //        return boekingWoningService.getBoekingWoningByWoningId(boekingId);
 //    }
 //}

@@ -4,16 +4,16 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-import com.Homes2Rent.Homes2Rent.dto.WoningDto;
-import com.Homes2Rent.Homes2Rent.model.Woning;
-import com.Homes2Rent.Homes2Rent.repository.AnnuleringRepository;
-import com.Homes2Rent.Homes2Rent.repository.BoekingRepository;
-import com.Homes2Rent.Homes2Rent.repository.FactuurRepository;
-import com.Homes2Rent.Homes2Rent.repository.WoningRepository;
-import com.Homes2Rent.Homes2Rent.service.AnnuleringsService;
-import com.Homes2Rent.Homes2Rent.service.BoekingService;
-import com.Homes2Rent.Homes2Rent.service.FactuurService;
-import com.Homes2Rent.Homes2Rent.service.WoningService;
+import com.Homes2Rent.Homes2Rent.dto.HomeDto;
+import com.Homes2Rent.Homes2Rent.model.Home;
+import com.Homes2Rent.Homes2Rent.repository.BookingRepository;
+import com.Homes2Rent.Homes2Rent.repository.CancellationRepository;
+import com.Homes2Rent.Homes2Rent.repository.HomeRepository;
+import com.Homes2Rent.Homes2Rent.repository.ReceiptRepository;
+import com.Homes2Rent.Homes2Rent.service.BookingService;
+import com.Homes2Rent.Homes2Rent.service.CancellationService;
+import com.Homes2Rent.Homes2Rent.service.ReceiptService;
+import com.Homes2Rent.Homes2Rent.service.HomeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -31,50 +31,50 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@ContextConfiguration(classes = {WoningController.class, WoningService.class, BoekingService.class,
-        FactuurService.class, AnnuleringsService.class})
+@ContextConfiguration(classes = {HomeController.class, HomeService.class, BookingService.class,
+        ReceiptService.class, CancellationService.class})
 @ExtendWith(SpringExtension.class)
 class WoningControllerTest {
     @MockBean
-    private AnnuleringRepository annuleringRepository;
+    private CancellationRepository cancellationRepository;
 
     @MockBean
-    private BoekingRepository boekingRepository;
+    private BookingRepository bookingRepository;
 
     @MockBean
-    private FactuurRepository factuurRepository;
+    private ReceiptRepository receiptRepository;
 
     @Autowired
-    private WoningController woningController;
+    private HomeController homeController;
 
     @MockBean
-    private WoningRepository woningRepository;
+    private HomeRepository homeRepository;
 
     /**
-     * Method under test: {@link WoningController#addWoning(WoningDto)}
+     * Method under test: {@link HomeController#addWoning(HomeDto)}
      */
     @Test
-    void testAddWoning() throws Exception {
-        Woning woning = new Woning();
-        woning.setBoekingen(new ArrayList<>());
-        woning.setId(123L);
-        woning.setName("Name");
-        woning.setPrice(1);
-        woning.setRented("Rented");
-        woning.setType("Type");
-        when(woningRepository.save((Woning) any())).thenReturn(woning);
+    void testAddHome() throws Exception {
+        Home home = new Home();
+        home.setBooking(new ArrayList<>());
+        home.setId(123L);
+        home.setName("Name");
+        home.setPrice(1);
+        home.setRented("Rented");
+        home.setType("Type");
+        when(homeRepository.save((Home) any())).thenReturn(home);
 
-        WoningDto woningDto = new WoningDto();
-        woningDto.setId(123L);
-        woningDto.setName("Name");
-        woningDto.setPrice(1);
-        woningDto.setRented("Rented");
-        woningDto.setType("Type");
-        String content = (new ObjectMapper()).writeValueAsString(woningDto);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/woningen")
+        HomeDto homeDto = new HomeDto();
+        homeDto.setId(123L);
+        homeDto.setName("Name");
+        homeDto.setPrice(1);
+        homeDto.setRented("Rented");
+        homeDto.setType("Type");
+        String content = (new ObjectMapper()).writeValueAsString(homeDto);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/home")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        MockMvcBuilders.standaloneSetup(woningController)
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -84,40 +84,40 @@ class WoningControllerTest {
     }
 
     /**
-     * Method under test: {@link WoningController#deleteWoning(Long)}
+     * Method under test: {@link HomeController#deleteWoning(Long)}
      */
     @Test
-    void testDeleteWoning() throws Exception {
-        doNothing().when(woningRepository).deleteById((Long) any());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/woningen/{id}", 123L);
-        MockMvcBuilders.standaloneSetup(woningController)
+    void testDeleteHome() throws Exception {
+        doNothing().when(homeRepository).deleteById((Long) any());
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/home/{id}", 123L);
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
-     * Method under test: {@link WoningController#deleteWoning(Long)}
+     * Method under test: {@link HomeController#deleteWoning(Long)}
      */
     @Test
-    void testDeleteWoning2() throws Exception {
-        doNothing().when(woningRepository).deleteById((Long) any());
-        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/woningen/{id}", 123L);
+    void testDeleteHome2() throws Exception {
+        doNothing().when(homeRepository).deleteById((Long) any());
+        MockHttpServletRequestBuilder deleteResult = MockMvcRequestBuilders.delete("/home/{id}", 123L);
         deleteResult.characterEncoding("Encoding");
-        MockMvcBuilders.standaloneSetup(woningController)
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(deleteResult)
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
-     * Method under test: {@link WoningController#getAllWoningen()}
+     * Method under test: {@link HomeController#getAllWoningen()}
      */
     @Test
-    void testGetAllWoningen() throws Exception {
-        when(woningRepository.findAll()).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/woningen");
-        MockMvcBuilders.standaloneSetup(woningController)
+    void testGetAllHome() throws Exception {
+        when(homeRepository.findAll()).thenReturn(new ArrayList<>());
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/home");
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -126,23 +126,23 @@ class WoningControllerTest {
     }
 
     /**
-     * Method under test: {@link WoningController#getAllWoningen()}
+     * Method under test: {@link HomeController#getAllWoningen()}
      */
     @Test
-    void testGetAllWoningen2() throws Exception {
-        Woning woning = new Woning();
-        woning.setBoekingen(new ArrayList<>());
-        woning.setId(123L);
-        woning.setName("?");
-        woning.setPrice(1);
-        woning.setRented("?");
-        woning.setType("?");
+    void testGetAllHome2() throws Exception {
+        Home home = new Home();
+        home.setBooking(new ArrayList<>());
+        home.setId(123L);
+        home.setName("?");
+        home.setPrice(1);
+        home.setRented("?");
+        home.setType("?");
 
-        ArrayList<Woning> woningList = new ArrayList<>();
-        woningList.add(woning);
-        when(woningRepository.findAll()).thenReturn(woningList);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/woningen");
-        MockMvcBuilders.standaloneSetup(woningController)
+        ArrayList<Home> homeList = new ArrayList<>();
+        homeList.add(home);
+        when(homeRepository.findAll()).thenReturn(homeList);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/home");
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -152,21 +152,21 @@ class WoningControllerTest {
     }
 
     /**
-     * Method under test: {@link WoningController#getWoning(Long)}
+     * Method under test: {@link HomeController#getWoning(Long)}
      */
     @Test
-    void testGetWoning() throws Exception {
-        Woning woning = new Woning();
-        woning.setBoekingen(new ArrayList<>());
-        woning.setId(123L);
-        woning.setName("Name");
-        woning.setPrice(1);
-        woning.setRented("Rented");
-        woning.setType("Type");
-        Optional<Woning> ofResult = Optional.of(woning);
-        when(woningRepository.findById((Long) any())).thenReturn(ofResult);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/woningen/{id}", 123L);
-        MockMvcBuilders.standaloneSetup(woningController)
+    void testGetHome() throws Exception {
+        Home home = new Home();
+        home.setBooking(new ArrayList<>());
+        home.setId(123L);
+        home.setName("Name");
+        home.setPrice(1);
+        home.setRented("Rented");
+        home.setType("Type");
+        Optional<Home> ofResult = Optional.of(home);
+        when(homeRepository.findById((Long) any())).thenReturn(ofResult);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/home/{id}", 123L);
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -176,41 +176,41 @@ class WoningControllerTest {
     }
 
     /**
-     * Method under test: {@link WoningController#updateWoning(Long, WoningDto)}
+     * Method under test: {@link HomeController#updateWoning(Long, HomeDto)}
      */
     @Test
-    void testUpdateWoning() throws Exception {
-        Woning woning = new Woning();
-        woning.setBoekingen(new ArrayList<>());
-        woning.setId(123L);
-        woning.setName("Name");
-        woning.setPrice(1);
-        woning.setRented("Rented");
-        woning.setType("Type");
-        Optional<Woning> ofResult = Optional.of(woning);
+    void testUpdateHome() throws Exception {
+        Home home = new Home();
+        home.setBooking(new ArrayList<>());
+        home.setId(123L);
+        home.setName("Name");
+        home.setPrice(1);
+        home.setRented("Rented");
+        home.setType("Type");
+        Optional<Home> ofResult = Optional.of(home);
 
-        Woning woning1 = new Woning();
-        woning1.setBoekingen(new ArrayList<>());
-        woning1.setId(123L);
-        woning1.setName("Name");
-        woning1.setPrice(1);
-        woning1.setRented("Rented");
-        woning1.setType("Type");
-        when(woningRepository.save((Woning) any())).thenReturn(woning1);
-        when(woningRepository.findById((Long) any())).thenReturn(ofResult);
-        when(woningRepository.existsById((Long) any())).thenReturn(true);
+        Home home1 = new Home();
+        home1.setBooking(new ArrayList<>());
+        home1.setId(123L);
+        home1.setName("Name");
+        home1.setPrice(1);
+        home1.setRented("Rented");
+        home1.setType("Type");
+        when(homeRepository.save((Home) any())).thenReturn(home1);
+        when(homeRepository.findById((Long) any())).thenReturn(ofResult);
+        when(homeRepository.existsById((Long) any())).thenReturn(true);
 
-        WoningDto woningDto = new WoningDto();
-        woningDto.setId(123L);
-        woningDto.setName("Name");
-        woningDto.setPrice(1);
-        woningDto.setRented("Rented");
-        woningDto.setType("Type");
-        String content = (new ObjectMapper()).writeValueAsString(woningDto);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/woningen/{id}", 123L)
+        HomeDto homeDto = new HomeDto();
+        homeDto.setId(123L);
+        homeDto.setName("Name");
+        homeDto.setPrice(1);
+        homeDto.setRented("Rented");
+        homeDto.setType("Type");
+        String content = (new ObjectMapper()).writeValueAsString(homeDto);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/home/{id}", 123L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
-        MockMvcBuilders.standaloneSetup(woningController)
+        MockMvcBuilders.standaloneSetup(homeController)
                 .build()
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())

@@ -6,7 +6,8 @@ import java.util.List;
 
 
 @Entity
-    public class Annulering {
+@Table(name = "cancellation")
+    public class Cancellation {
 
         @Id
         @GeneratedValue
@@ -16,33 +17,41 @@ import java.util.List;
 
         private String status;
 
-        private String type_boeking;
+        private String type_booking;
 
         private Integer price;
 
         private String name;
 
         @OneToOne
-        public Woning woning;
+        public Home home;
 
-        @OneToMany(mappedBy = "annulering")
+        @OneToMany(mappedBy = "cancellation")
         @JsonIgnore
-        List<Boeking> boekingen;
+        List<Booking> booking;
+
+    public List<Booking> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
+    }
 
 
-        public Annulering(Long id, LocalDate finish_date, String status, String type_boeking, Woning woning, Integer price, String name) {
+        public Cancellation(Long id, LocalDate finish_date, String status, String type_booking, Home home, Integer price, String name) {
             this.id = id;
             this.finish_date = finish_date;
             this.status = status;
-            this.type_boeking = type_boeking;
-            this.woning = woning;
+            this.type_booking = type_booking;
+            this.home = home;
             this.price = price;
             this.name = name;
 
         }
 
 
-        public Annulering() {
+        public Cancellation() {
         }
 
         public Long getId() {
@@ -71,11 +80,11 @@ import java.util.List;
         }
 
         public String getType_boeking() {
-            return type_boeking;
+            return type_booking;
         }
 
-        public void setType_boeking(String type_boeking) {
-            this.type_boeking = type_boeking;
+        public void setType_booking(String type_booking) {
+            this.type_booking = type_booking;
         }
 
         public Integer getPrice() {
@@ -94,12 +103,12 @@ import java.util.List;
             this.name = name;
         }
 
-        public Woning getWoning() {
-            return woning;
+        public Home getHome() {
+            return home;
         }
 
-        public void setWoning(Woning woning) {
-            this.woning = woning;
+        public void setHome(Home home) {
+            this.home = home;
         }
     }
 

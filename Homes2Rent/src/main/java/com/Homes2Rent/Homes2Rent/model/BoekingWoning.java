@@ -12,12 +12,12 @@
 //    @ManyToOne
 //    @MapsId("boekingId")
 //    @JoinColumn(name = "boeking_id")
-//    private Boeking boeking;
+//    private Booking booking;
 //
 //    @ManyToOne
 //    @MapsId("woningId")
 //    @JoinColumn(name = "woning_id")
-//    private Woning woning;
+//    private Home home;
 //
 //
 //    public BoekingWoningKey getId() {
@@ -28,19 +28,19 @@
 //        this.id = id;
 //    }
 //
-//    public Boeking getBoeking() {
-//        return boeking;
+//    public Booking getBoeking() {
+//        return booking;
 //    }
 //
-//    public void setBoeking(Boeking boeking) {
-//        this.boeking = boeking;
+//    public void setBoeking(Booking booking) {
+//        this.booking = booking;
 //    }
 //
-//    public Woning getWoning() {
-//        return woning;
+//    public Home getWoning() {
+//        return home;
 //    }
 //
-//    public void setWoning(Woning woning) {
-//        this.woning = woning;
+//    public void setWoning(Home home) {
+//        this.home = home;
 //    }
 //}

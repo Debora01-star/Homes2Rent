@@ -6,8 +6,8 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "woningen")
-public class Woning {
+@Table(name = "home")
+public class Home {
 
 
     @Id
@@ -21,19 +21,19 @@ public class Woning {
     private String rented;
 
 
-    @OneToMany(mappedBy = "woning")
+    @OneToMany(mappedBy = "home")
     @JsonIgnore
-    List<Boeking> boekingen;
+    List<Booking> booking;
 
-    public List<Boeking> getBoekingen() {
-        return boekingen;
+    public List<Booking> getBooking() {
+        return booking;
     }
 
-    public void setBoekingen(List<Boeking> boekingen) {
-        this.boekingen = boekingen;
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
     }
 
-    public Woning(Long id, String type, String name, Integer price, String rented) {
+    public Home(Long id, String type, String name, Integer price, String rented) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -41,13 +41,13 @@ public class Woning {
         this.rented = rented;
     }
 
-    public Woning(Long id, String type, String name) {
+    public Home(Long id, String type, String name) {
         this.id = id;
         this.type = type;
         this.name = name;
     }
 
-    public Woning(String type, String name, Long id, Integer price, String rented) {
+    public Home(String type, String name, Long id, Integer price, String rented) {
         this.type = type;
         this.name = name;
         this.id = id;
@@ -55,7 +55,7 @@ public class Woning {
         this.rented = rented;
     }
 
-    public Woning() {
+    public Home() {
 
     }
 

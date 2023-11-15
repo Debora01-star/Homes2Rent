@@ -1,33 +1,36 @@
 package com.Homes2Rent.Homes2Rent.dto;
-import com.Homes2Rent.Homes2Rent.model.Woning;
+import com.Homes2Rent.Homes2Rent.model.Home;
 import java.time.LocalDate;
 
 
-public class AnnuleringDto {
+public class CancellationInputDto {
 
 
     public Long id;
     public LocalDate finish_date;
 
     public String status;
-    public String type_boeking;
+    public String type_booking;
 
-    public Woning woning;
+    public Home home;
+
     private Integer price;
     private String name;
 
-    public AnnuleringDto(Long id, LocalDate finish_date, String status, String type_boeking, Woning woning, Integer price, String name) {
+
+
+    public CancellationInputDto(Long id, LocalDate finish_date, String status, String type_booking, Home home, Integer price, String name) {
         this.id = id;
         this.finish_date = finish_date;
         this.status = status;
-        this.type_boeking = type_boeking;
-        this.woning = woning;
+        this.type_booking = type_booking;
+        this.home = home;
         this.price = price;
         this.name = name;
 
     }
 
-    public AnnuleringDto() {
+    public CancellationInputDto() {
     }
 
     public Long getId() {
@@ -46,7 +49,6 @@ public class AnnuleringDto {
         this.finish_date = finish_date;
     }
 
-
     public String getStatus() {
         return status;
     }
@@ -55,20 +57,20 @@ public class AnnuleringDto {
         this.status = status;
     }
 
-    public String getType_boeking() {
-        return type_boeking;
+    public String getType_booking() {
+        return type_booking;
     }
 
-    public void setType_boeking(String type_boeking) {
-        this.type_boeking = type_boeking;
+    public void setType_booking(String type_booking) {
+        this.type_booking = type_booking;
     }
 
-    public Woning getWoning() {
-        return woning;
+    public Home getHome() {
+        return home;
     }
 
-    public void setWoning(Woning woning) {
-        this.woning = woning;
+    public void setHome(Home home) {
+        this.home = home;
     }
 
     public Integer getPrice() {

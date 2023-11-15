@@ -1,15 +1,16 @@
 package com.Homes2Rent.Homes2Rent.dto;
+import com.Homes2Rent.Homes2Rent.model.Home;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.Homes2Rent.Homes2Rent.model.Woning;
+
 import javax.persistence.Column;
 import java.time.LocalDate;
 
 
-public class BoekingInputDto {
+public class BookingInputDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -21,25 +22,25 @@ public class BoekingInputDto {
 
     public String status;
 
-    public String type_boeking;
+    public String type_booking;
 
     @Column(unique = true)
-    public Woning woning;
+    public Home home;
 
     public Integer price;
 
 
-    public BoekingInputDto(LocalDate finish_date, Long id, String status, String type_boeking, Woning woning, Integer price) {
+    public BookingInputDto(LocalDate finish_date, Long id, String status, String type_booking, Home home, Integer price) {
         this.finish_date = finish_date;
         this.id = id;
         this.status = status;
-        this.type_boeking = type_boeking;
-        this.woning = woning;
+        this.type_booking = type_booking;
+        this.home = home;
         this.price = price;
 
     }
 
-    public BoekingInputDto() {
+    public BookingInputDto() {
 
     }
 
@@ -67,20 +68,20 @@ public class BoekingInputDto {
         this.status = status;
     }
 
-    public String getType_boeking() {
-        return type_boeking;
+    public String getType_booking() {
+        return type_booking;
     }
 
-    public void setType_boeking(String type_boeking) {
-        this.type_boeking = type_boeking;
+    public void setType_booking(String type_booking) {
+        this.type_booking = type_booking;
     }
 
-    public Woning getWoning() {
-        return woning;
+    public Home getHome() {
+        return home;
     }
 
-    public void setWoning(Woning woning) {
-        this.woning = woning;
+    public void setHome(Home home) {
+        this.home = home;
     }
 
     public Integer getPrice() {

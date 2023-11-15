@@ -1,32 +1,30 @@
 package com.Homes2Rent.Homes2Rent.dto;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 
-public class WoningInputDto {
+public class HomeDto {
 
-    @Id
-    @GeneratedValue
+
     public Long id;
 
     private String type;
-
     private String name;
-
     private Integer price;
-
     private String rented;
 
 
-    public WoningInputDto(Long id, String type, String name, Integer price, String rented) {
+    public HomeDto(Long id, String type, String name, Integer price, String rented) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.price = price;
         this.rented = rented;
 
-    }
 
+    }
+    public HomeDto() {
+
+
+    }
 
     public Long getId() {
         return id;
@@ -67,4 +65,5 @@ public class WoningInputDto {
     public void setRented(String rented) {
         this.rented = rented;
     }
+
 }

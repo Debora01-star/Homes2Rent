@@ -1,11 +1,11 @@
 package com.Homes2Rent.Homes2Rent.dto;
 
 
-public class FactuurInputDto {
+public class ReceiptInputDto {
 
     public Long id;
 
-    public String boeking;
+    public String booking;
 
     public Integer price;
 
@@ -17,12 +17,12 @@ public class FactuurInputDto {
         this.id = id;
     }
 
-    public String getBoeking() {
-        return boeking;
+    public String getBooking() {
+        return booking;
     }
 
-    public void setBoeking(String boeking) {
-        this.boeking = boeking;
+    public void setBooking(String booking) {
+        this.booking = booking;
     }
 
     public Integer getPrice() {

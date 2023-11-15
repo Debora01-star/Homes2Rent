@@ -1,30 +1,31 @@
 package com.Homes2Rent.Homes2Rent.dto;
-import com.Homes2Rent.Homes2Rent.model.Woning;
+import com.Homes2Rent.Homes2Rent.model.Home;
+
 import java.time.LocalDate;
 
 
-public class BoekingDto {
+public class BookingDto {
 
 
     public Long id;
     public LocalDate finish_date;
 
     public String status;
-    public String type_boeking;
+    public String type_booking;
 
-    public Woning woning;
+    public Home home;
     private Integer price;
 
 
-    public BoekingDto() {
+    public BookingDto() {
     }
 
-    public BoekingDto(Long id, LocalDate finish_date, String status, String type_boeking, Woning woning, Integer price) {
+    public BookingDto(Long id, LocalDate finish_date, String status, String type_booking, Home home, Integer price) {
         this.id = id;
         this.finish_date = finish_date;
         this.status = status;
-        this.type_boeking = type_boeking;
-        this.woning = woning;
+        this.type_booking = type_booking;
+        this.home = home;
         this.price = price;
     }
 
@@ -53,20 +54,20 @@ public class BoekingDto {
         this.status = status;
     }
 
-    public String getType_boeking() {
-        return type_boeking;
+    public String getType_booking() {
+        return type_booking;
     }
 
-    public void setType_boeking(String type_boeking) {
-        this.type_boeking = type_boeking;
+    public void setType_booking(String type_booking) {
+        this.type_booking = type_booking;
     }
 
-    public Woning getWoning() {
-        return woning;
+    public Home getHome() {
+        return home;
     }
 
-    public void setWoning(Woning woning) {
-        this.woning = woning;
+    public void setHome(Home home) {
+        this.home = home;
     }
 
     public Integer getPrice() {
@@ -77,10 +78,10 @@ public class BoekingDto {
         this.price = price;
     }
 
-    public void setFactuurDto(FactuurDto transferToDto) {
+    public void setReceiptDto(ReceiptDto transferToDto) {
     }
 
-    public void setAnnuleringDto(AnnuleringDto transferToDto) {
+    public void setCancellationDto(CancellationDto transferToDto) {
     }
 }
 

@@ -1,16 +1,16 @@
 //package com.Homes2Rent.Homes2Rent.service;
 //
 //
-//import com.Homes2Rent.Homes2Rent.dto.BoekingDto;
-//import com.Homes2Rent.Homes2Rent.dto.WoningDto;
+//import com.Homes2Rent.Homes2Rent.dto.BookingDto;
+//import com.Homes2Rent.Homes2Rent.dto.HomeDto;
 //import com.Homes2Rent.Homes2Rent.exceptions.RecordNotFoundException;
-//import com.Homes2Rent.Homes2Rent.model.Boeking;
+//import com.Homes2Rent.Homes2Rent.model.Booking;
 //import com.Homes2Rent.Homes2Rent.model.BoekingWoning;
 //import com.Homes2Rent.Homes2Rent.model.BoekingWoningKey;
-//import com.Homes2Rent.Homes2Rent.model.Woning;
-//import com.Homes2Rent.Homes2Rent.repository.BoekingRepository;
+//import com.Homes2Rent.Homes2Rent.model.Home;
+//import com.Homes2Rent.Homes2Rent.repository.BookingRepository;
 //import com.Homes2Rent.Homes2Rent.repository.BoekingWoningRepository;
-//import com.Homes2Rent.Homes2Rent.repository.WoningRepository;
+//import com.Homes2Rent.Homes2Rent.repository.HomeRepository;
 //import org.springframework.stereotype.Service;
 //
 //import java.util.Collection;
@@ -19,24 +19,24 @@
 //@Service
 //public class BoekingWoningService {
 //
-//    private final BoekingRepository boekingRepository;
+//    private final BookingRepository boekingRepository;
 //
-//    private final WoningRepository woningRepository;
+//    private final HomeRepository woningRepository;
 //
 //    private final BoekingWoningRepository boekingWoningRepository;
 //
-//    public BoekingWoningService(BoekingRepository boekingRepository, WoningRepository woningRepository, BoekingWoningRepository boekingWoningRepository) {
+//    public BoekingWoningService(BookingRepository boekingRepository, HomeRepository woningRepository, BoekingWoningRepository boekingWoningRepository) {
 //        this.boekingRepository = boekingRepository;
 //        this.woningRepository = woningRepository;
 //        this.boekingWoningRepository = boekingWoningRepository;
 //    }
 //
-//    public Collection<BoekingDto> getBoekingWoningByWoningId(Long woningId) {
-//        Collection<BoekingDto> dtos = new HashSet<>();
+//    public Collection<BookingDto> getBoekingWoningByWoningId(Long woningId) {
+//        Collection<BookingDto> dtos = new HashSet<>();
 //        Collection<BoekingWoning> boekingWoningen = boekingWoningRepository.findAllByWoningId((woningId));
 //        for (BoekingWoning boekingWoning : boekingWoningen) {
-//            Boeking boeking = boekingWoning.getBoeking();
-//            BoekingDto dto = new BoekingDto();
+//            Booking boeking = boekingWoning.getBoeking();
+//            BookingDto dto = new BookingDto();
 //
 //            boeking.setId(dto.getId());
 //            boeking.setType_boeking(dto.getType_boeking());
@@ -49,18 +49,18 @@
 //        }
 //        return dtos;
 //    }
-//    public Collection<WoningDto> getBoekingWoningByBoekingId(Long boekingId) {
-//        Collection<WoningDto> dtos = new HashSet<>();
+//    public Collection<HomeDto> getBoekingWoningByBoekingId(Long boekingId) {
+//        Collection<HomeDto> dtos = new HashSet<>();
 //        Collection<BoekingWoning> boekingWoningen = boekingWoningRepository.findAllByBoekingId((boekingId));
 //        for (BoekingWoning boekingWoning : boekingWoningen) {
-//            Woning woning = boekingWoning.getWoning();
-//            var dto = new WoningDto();
+//            Home home = boekingWoning.getWoning();
+//            var dto = new HomeDto();
 //
-//            dto.setId(woning.getId());
-//            dto.setName(woning.getName());
-//            dto.setPrice(woning.getPrice());
-//            dto.setType(woning.getType());
-//            dto.setRented(woning.getRented());
+//            dto.setId(home.getId());
+//            dto.setName(home.getName());
+//            dto.setPrice(home.getPrice());
+//            dto.setType(home.getType());
+//            dto.setRented(home.getRented());
 //
 //            dtos.add(dto);
 //        }
@@ -72,11 +72,11 @@
 //        var boekingWoning = new BoekingWoning();
 //
 //        if (!boekingRepository.existsById(boekingId)) {throw new RecordNotFoundException();}
-//        Boeking boeking = boekingRepository.findById(boekingId).orElse(null);
+//        Booking boeking = boekingRepository.findById(boekingId).orElse(null);
 //        if (!woningRepository.existsById(woningId)) {throw new RecordNotFoundException();}
-//        Woning woning = woningRepository.findById(woningId).orElse(null);
+//        Home home = woningRepository.findById(woningId).orElse(null);
 //        boekingWoning.setBoeking(boeking);
-//        boekingWoning.setWoning(woning);
+//        boekingWoning.setWoning(home);
 //        BoekingWoningKey id = new BoekingWoningKey(boekingId, woningId);
 //        boekingWoning.setId(id);
 //        boekingWoningRepository.save(boekingWoning);
